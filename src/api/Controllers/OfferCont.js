@@ -32,7 +32,7 @@ const getOneOffer = async(req,res)=>{
 const addOffer = async(req,res)=>{
     try {
     const {title , description , photo , price , place , dateFrom , dateTo , stores} = req.body ;
-    const Offer = new Offer({
+    const offer = new Offer({
         title , 
         description , 
         photo , 
@@ -42,7 +42,7 @@ const addOffer = async(req,res)=>{
         dateTo , 
         stores
     });
-    await Offer.save();
+    await offer.save();
     res.send("Offer added ");
     } catch (error) {
         res.status(400).send(error.message);
@@ -87,9 +87,9 @@ const addOfferToFav = async(req,res)=>{
 
       const result = await Offer.findById(req.params.id);
       if(!result) throw new Error("no Offer was found");
-      const user = await User.findById(req.user._id) ;
-      // push params id to user favoriteOffers
-      // user save
+      const likedComp = {'$push' : {'favoriteOffers' : req.params.id}};
+      const user = await User.findByIdAndUpdate("5c605aae402629201d8504e3",likedComp,{new : true, upsert : true}) ;
+      // req.user._id after auth complete
       res.status(200).send('added to favorite'); 
     } catch (error) {
         res.status(400).send(error.message);

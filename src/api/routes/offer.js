@@ -34,6 +34,6 @@ router.delete('/:id',deleteOffer);
 /*
 * add offer to fav
 */
-router.post('/:id',addOfferToFav);
+router.post('/favorite/:id',addOfferToFav);
 
 exports.OfferRouter=router;

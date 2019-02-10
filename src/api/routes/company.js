@@ -35,6 +35,6 @@ router.delete('/:id',deleteCompany);
 /*
 * add offer to fav
 */
-router.post('/:id',addCompanyToFav);
+router.post('/favorite/:id',addCompanyToFav);
 
 exports.CompanyRouter=router;

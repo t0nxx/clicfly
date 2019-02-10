@@ -32,14 +32,14 @@ const getOneCompany = async(req,res)=>{
 const addCompany = async(req,res)=>{
     try {
     const {name , about ,stores , gallery , socialMedia} = req.body ;
-    const Company = new Company({
+    const company = new Company({
         name ,
         about ,
         stores , 
         gallery , 
         socialMedia
     });
-    await Company.save();
+    await company.save();
     res.send("Company added ");
     } catch (error) {
         res.status(400).send(error.message);
@@ -84,9 +84,9 @@ const addCompanyToFav = async(req,res)=>{
 
       const result = await Company.findById(req.params.id);
       if(!result) throw new Error("no Company was found");
-      const user = await User.findById(req.user._id) ;
-      // push params id to user favoriteOffers
-      // user save
+      const likedComp = {'$push' : {'favoriteCompanies' : req.params.id}};
+      const user = await User.findByIdAndUpdate("5c605aae402629201d8504e3",likedComp,{new : true, upsert : true}) ;
+      // req.user._id after auth complete
       res.status(200).send('added to favorite'); 
     } catch (error) {
         res.status(400).send(error.message);
