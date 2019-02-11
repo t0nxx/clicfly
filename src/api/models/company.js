@@ -13,9 +13,18 @@ const companySchema = new Schema({
         type : String
     },
     stores : [{type:String}],
-    gallery : [{type:String}],
+    gallery : [{url:String}],
     socialMedia : [{type : String }]  /// just dev , add map to this field 
 },{timestamps:true});
-
+    function baseurl (v){ 
+        return `${galleryBaseUrl}${v}`
+    };
+companySchema.path('gallery.0.url').get(v=> `${galleryBaseUrl}${v}`);
 const Company = model('Company',companySchema);
 exports.Company = Company ;
+// controller
+// result.forEach(comp => {
+        //     comp.gallery.forEach(photo=>{
+        //         photo.url = photo.url       /// enable getter
+        //     })
+        // });

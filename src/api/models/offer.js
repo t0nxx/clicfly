@@ -17,7 +17,8 @@ const offerSchema = new Schema({
     },
     photo : {
         type : String,
-        default:"/////pic/////"
+        get : v => `${galleryBaseUrl}${v}`,
+        required : true
     },
     price : {
         type : Number ,
