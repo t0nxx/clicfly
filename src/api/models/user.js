@@ -52,6 +52,9 @@ userSchema.pre('save',async function(){
         this.password = await bcrypt.hashSync(this.password,10);
     }
 })
+userSchema.methods.comPassword = async function (pass){
+        return bcrypt.compare(pass,this.password)     
+}
 /// add  forgetPassword method here
 const User = model('User',userSchema);
 

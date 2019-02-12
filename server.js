@@ -6,6 +6,7 @@ const {AdminRouter} = require('./src/api/routes/admin');
 const {CompanyRouter} = require('./src/api/routes/company');
 const {OfferRouter} = require('./src/api/routes/offer');
 const {UserRouter} = require('./src/api/routes/user');
+const {AuthRouter} = require('./src/api/routes/auth');
 require('dotenv').config();
 app.use(express.json());
 app.use(cors());
@@ -13,6 +14,7 @@ app.use('/admins' , AdminRouter);
 app.use('/companies' , CompanyRouter);
 app.use('/offers' , OfferRouter);
 app.use('/users' , UserRouter);
+app.use('/auth' , AuthRouter);
 
 app.get('/' , (req,res) => {
     res.status(200).send("welcome home route");
