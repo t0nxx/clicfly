@@ -12,38 +12,6 @@ const getAllAdmins = async (req,res)=>{
         res.status(400).send(error.message);
     }
 }
-
-/* get one Admin handler */
-const getOneAdmin = async(req,res)=>{
-    try {
-       /* validate id is mongo objectType */
-        validIdObject(req.params.id);
-
-      const result = await Admin.findById(req.params.id);
-      if(!result) throw new Error("no Admin was found");
-      res.status(200).send(result); 
-    } catch (error) {
-        res.status(400).send(error.message);
-    }
-}
-
-/* add new Admin */ 
-
-const addAdmin = async(req,res)=>{
-    try {
-    const {name , email , password } = req.body ;
-    const admin = new Admin({
-        name ,
-        password,
-        email,
-    });
-    await admin.save();
-    res.status(200).send("Admin added ");
-    } catch (error) {
-        res.status(400).send(error.message);
-    }
-}
-
 /* update Admin */ 
 const updateAdmin = async (req,res)=>{
     try {
@@ -68,23 +36,5 @@ const updateAdmin = async (req,res)=>{
         res.status(400).send(error.message);
     }
 }
-
-const deleteAdmin = async(req,res)=>{
-    try {
-        /* validate id is mongo objectType */
-        validIdObject(req.params.id);
-
-        const result = await Admin.findById(req.params.id);
-        if(!result) throw new Error("no Admin was found");
-        await Admin.findByIdAndRemove(req.params.id);
-        res.status(200).send("Admin deleted");
-    } catch (error) {
-        res.status(400).send(error.message);
-    }
-}
-
 exports.getAllAdmins=getAllAdmins;
-exports.getOneAdmin=getOneAdmin;
-exports.addAdmin=addAdmin;
 exports.updateAdmin=updateAdmin;
-exports.deleteAdmin=deleteAdmin;

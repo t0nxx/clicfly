@@ -6,7 +6,6 @@ const {
     addCompany,
     updateCompany,
     deleteCompany,
-    addCompanyToFav
 } = require('../Controllers/CompanyCont');
 
 
@@ -32,9 +31,5 @@ router.put('/:id',updateCompany);
 * delete Company
 */
 router.delete('/:id',deleteCompany);
-/*
-* add offer to fav
-*/
-router.post('/favorite/:id',addCompanyToFav);
 
 exports.CompanyRouter=router;
