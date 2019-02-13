@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {getAllUsers,getOneUser,addUser,updateUser,deleteUser} = require('../Controllers/UserCont');
+const {getAllUsers,getOneUser,addUser,updateUser,deleteUser,changePassword} = require('../Controllers/UserCont');
 
 
 /*
@@ -24,5 +24,9 @@ router.put('/:id',updateUser);
 * delete User
 */
 router.delete('/:id',deleteUser);
+/*
+* change password
+*/
+router.put('/:id/changepassword',changePassword);
 
 exports.UserRouter=router;
