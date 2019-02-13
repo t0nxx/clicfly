@@ -1,12 +1,11 @@
 const mongoose = require('mongoose');
 const {Offer}= require('../models/offer');
-const {User}= require('../models/user');
 const {validIdObject}=require('../helpers/validateObjectId');
 
 /* get all Offers handler */ 
 const getAllOffers = async (req,res)=>{
     try {
-        const result = await Offer.find({});
+        const result = await Offer.find({}).populate('companyName place','name');
         res.status(200).send(result);
     } catch (error) {
         res.status(400).send(error.message);
@@ -31,16 +30,17 @@ const getOneOffer = async(req,res)=>{
 
 const addOffer = async(req,res)=>{
     try {
-    const {title , description , photo , price , place , dateFrom , dateTo , stores} = req.body ;
+    const {category , description , photo , price , place , dateFrom , dateTo , companyName , special} = req.body ;
     const offer = new Offer({
-        title , 
+        category , 
         description , 
         photo , 
         price , 
         place , 
         dateFrom , 
         dateTo , 
-        stores
+        companyName ,
+        special
     });
     await offer.save();
     res.send("Offer added ");
@@ -79,26 +79,10 @@ const deleteOffer = async(req,res)=>{
         res.status(400).send(error.message);
     }
 }
-/* add offer to fav */ 
-const addOfferToFav = async(req,res)=>{
-    try {
-       /* validate id is mongo objectType */
-        validIdObject(req.params.id);
 
-      const result = await Offer.findById(req.params.id);
-      if(!result) throw new Error("no Offer was found");
-      const likedComp = {'$push' : {'favoriteOffers' : req.params.id}};
-      const user = await User.findByIdAndUpdate("5c605aae402629201d8504e3",likedComp,{new : true, upsert : true}) ;
-      // req.user._id after auth complete
-      res.status(200).send('added to favorite'); 
-    } catch (error) {
-        res.status(400).send(error.message);
-    }
-}
 
 exports.getAllOffers=getAllOffers;
 exports.getOneOffer=getOneOffer;
 exports.addOffer=addOffer;
 exports.updateOffer=updateOffer;
 exports.deleteOffer=deleteOffer;
-exports.addOfferToFav=addOfferToFav;

@@ -4,16 +4,16 @@ const model = mongoose.model;
 const galleryBaseUrl = 'http://localhost:5000/offers/gallary/'
 const ObjectId = Schema.Types.ObjectId;
 const offerSchema = new Schema({
-    title : {
+    category : {
         type : String ,
-        minlength : 3 ,
-        maxlength : 255 ,
+        enum : ['Company','Airline'] ,
         required : true
     },
     description : {
         type : String ,
         minlength : 3 ,
         maxlength : 255 ,
+        required : true
     },
     photo : {
         type : String,
@@ -26,16 +26,23 @@ const offerSchema = new Schema({
         min : 0
     },
     place : {
-        type : String ,
+        type : [{type:ObjectId,ref :'Place'}],
         required : true ,
     },
+    companyName : {
+        type : ObjectId,ref :'Company',
+        required : true ,
+    },
+    special : {
+        type : Boolean ,
+        default : false
+    },
     dateFrom : {
-        type : String ,
+        type : Date ,
     },
     dateTo : {
-        type : String ,
-    },
-    stores : [{type : String}] ,
+        type : Date ,
+    }
 },{timestamps:true});
 
 const Offer = model ('Offer' , offerSchema);

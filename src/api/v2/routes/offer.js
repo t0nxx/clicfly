@@ -6,7 +6,6 @@ const {
     addOffer,
     updateOffer,
     deleteOffer,
-    addOfferToFav
 } = require('../Controllers/OfferCont');
 
 
@@ -31,9 +30,6 @@ router.put('/:id',updateOffer);
 * delete Offer
 */
 router.delete('/:id',deleteOffer);
-/*
-* add offer to fav
-*/
-router.post('/favorite/:id',addOfferToFav);
+
 
 exports.OfferRouter=router;
