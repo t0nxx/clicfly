@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
-const {User}= require('../models/user');
+const {User,Base}= require('../models/user');
 const {validIdObject}=require('../helpers/validateObjectId');
 const bcrypt = require('bcryptjs');
 
 /* get all Users handler */ 
 const getAllUsers = async (req,res)=>{
     try {
-        const result = await User.find({});
+        const result = await Base.find({});
         res.status(200).send(result);
     } catch (error) {
         res.status(400).send(error.message);
@@ -34,12 +34,10 @@ const addUser = async(req,res)=>{
     const {name , email , password , gender } = req.body ;
     const user = new User({
         method : 'local',
-        local : {
             name ,
             email ,
             password,
             gender   
-        }
     });
     await user.save();
     res.status(200).send("User added ");
@@ -59,16 +57,16 @@ const updateUser = async (req,res)=>{
         if(!result) throw new Error("no User was found");
 
         if(req.body.email){
-            const chkexist = await User.findOne({'local.email' : req.body.email});
+            const chkexist = await User.findOne({'email' : req.body.email});
             if(chkexist) throw new Error('email already exist');
         }
-        await User.findByIdAndUpdate(req.params.id,{"$set": {'local' : updatedData}},{new : true});
+        await User.findByIdAndUpdate(req.params.id,updatedData,{upsert : true});
         res.status(200).send("User update done");
     } catch (error) {
         res.status(400).send(error.message);
     }
 }
-
+// it would be req.user._id after auth complete . up/dele
 
 const deleteUser = async(req,res)=>{
     try {
