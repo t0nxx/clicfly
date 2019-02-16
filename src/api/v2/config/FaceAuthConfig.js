@@ -6,10 +6,10 @@ const faceAuthStrat = new FacebookTokenStrategy({
     clientSecret: process.env.FACEBOOK_APP_SECRET
 },async function(accessToken, refreshToken, profile,next){
     try {
-    let isExist = await facebookUser.findOne({id : profile.id});
+    let isExist = await facebookUser.findOne({_id : profile.id});
     if(!isExist){
             let isExist = new facebookUser({
-                id : profile.id ,
+                _id : profile.id ,
                 email : profile.emails[0].value
              });
              await isExist.save();

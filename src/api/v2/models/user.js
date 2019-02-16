@@ -60,10 +60,9 @@ emailUserSchema.methods.forgetPassword = async function (email){
 /* start login with facebook schema */
 
 const facebookUserSchema = new Schema({
-    id : {
+    _id : {
         type : String ,
-        required : true,
-        unique : true
+        required : true ,
     } ,
     email :String
 })
@@ -73,10 +72,9 @@ const facebookUserSchema = new Schema({
 /* start login with google schema */
 
 const googleUserSchema = new Schema({
-    id : {
+    _id : {
         type : String ,
-        required : true ,
-        unique : true
+        required : true 
     } ,
     email :String
 })
