@@ -6,6 +6,7 @@ const {
     addOffer,
     updateOffer,
     deleteOffer,
+    search
 } = require('../Controllers/OfferCont');
 
 
@@ -13,6 +14,10 @@ const {
 * get all Offers 
 */
 router.get('/',getAllOffers);
+/*
+* search
+*/
+router.get('/search',search);
 
 /*
 * get Offer
@@ -30,6 +35,5 @@ router.put('/:id',updateOffer);
 * delete Offer
 */
 router.delete('/:id',deleteOffer);
-
 
 exports.OfferRouter=router;

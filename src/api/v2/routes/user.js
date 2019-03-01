@@ -28,5 +28,6 @@ router.delete('/:id',deleteUser);
 * change password
 */
 router.put('/:id/changepassword',changePassword);
+///forget password
 
 exports.UserRouter=router;

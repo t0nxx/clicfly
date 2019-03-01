@@ -4,8 +4,15 @@ const {validIdObject}=require('../helpers/validateObjectId');
 
 /* get all Offers handler */ 
 const getAllOffers = async (req,res)=>{
+    let page = parseInt(req.query.page) || 0 ;
+    let limit = parseInt(req.query.limit) || 10;
     try {
-        const result = await Offer.find({}).populate('companyName place','name');
+        const result = await Offer.find({}).skip(page * limit).limit(limit).populate('companyName','name phone');
+        // to retrive base url from db 
+        result.forEach(offer => {
+            offer.homePhoto = offer.homePhoto ;
+            offer.singlePhoto = offer.singlePhoto;
+        })
         res.status(200).send(result);
     } catch (error) {
         res.status(400).send(error.message);
@@ -20,6 +27,8 @@ const getOneOffer = async(req,res)=>{
 
       const result = await Offer.findById(req.params.id);
       if(!result) throw new Error("no Offer was found");
+      result.homePhoto = result.homePhoto ;
+      result.singlePhoto = result.singlePhoto
       res.status(200).send(result); 
     } catch (error) {
         res.status(400).send(error.message);
@@ -30,17 +39,19 @@ const getOneOffer = async(req,res)=>{
 
 const addOffer = async(req,res)=>{
     try {
-    const {category , description , photo , price , place , dateFrom , dateTo , companyName , special} = req.body ;
+    const {category , price , place , dateFrom , dateTo , companyName , special , includesTickets , includeAccommodation} = req.body ;
     const offer = new Offer({
         category , 
-        description , 
-        photo , 
         price , 
         place , 
         dateFrom , 
         dateTo , 
         companyName ,
-        special
+        special ,
+        includesTickets ,
+        includeAccommodation ,
+        homePhoto: "home.png",
+        singlePhoto: "single.png"
     });
     await offer.save();
     res.send("Offer added ");
@@ -79,10 +90,22 @@ const deleteOffer = async(req,res)=>{
         res.status(400).send(error.message);
     }
 }
-
-
+/* search */
+const search = async (req,res)=>{
+    let {q} = req.query ;
+    try {
+        //const result = await Offer.search({query_string: {query: q}},{hydrate: true,hydrateOptions: {select: 'category'}});
+        Offer.search({query_string: {query: q}},(err, results)=>{
+                res.status(200).send(results.hits.hits);
+          });
+        
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
 exports.getAllOffers=getAllOffers;
 exports.getOneOffer=getOneOffer;
 exports.addOffer=addOffer;
 exports.updateOffer=updateOffer;
 exports.deleteOffer=deleteOffer;
+exports.search=search;

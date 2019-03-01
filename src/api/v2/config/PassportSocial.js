@@ -12,6 +12,7 @@ const FacebookAuth = (req,res,next)=>{
         try {
             if(err) throw new Error ('not signed account / invalid access token')
             else {
+                console.log(data);
                 res.json({token : genToken(data.id)});
             }
         } catch (error) {
@@ -22,10 +23,11 @@ const FacebookAuth = (req,res,next)=>{
 
 
 const GoogleAuth = (req,res,next)=>{
-    passport.authenticate('google-token',{session:false},(err,data)=>{
+    passport.authenticate('google-token',{session:false},(data)=>{
         try {
-            if(err) throw new Error ('not signed account / invalid access token')
+            if(!data) throw new Error ('not signed account / invalid access token')
             else {
+                console.log(data);
                 res.json({token : genToken(data.id)});
             }
         } catch (error) {

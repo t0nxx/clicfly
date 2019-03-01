@@ -3,19 +3,19 @@ const Schema = mongoose.Schema ;
 const model = mongoose.model;
 const galleryBaseUrl = 'http://localhost:5000/offers/gallary/'
 const ObjectId = Schema.Types.ObjectId;
+const mongoosastic = require('mongoosastic');
 const offerSchema = new Schema({
     category : {
         type : String ,
-        enum : ['Company','Airline'] ,
+        enum : ['Company','Hotel'] ,
+        required : true ,
+    },
+    homePhoto : {
+        type : String,
+        get : v => `${galleryBaseUrl}${v}`,
         required : true
     },
-    description : {
-        type : String ,
-        minlength : 3 ,
-        maxlength : 255 ,
-        required : true
-    },
-    photo : {
+    singlePhoto : {
         type : String,
         get : v => `${galleryBaseUrl}${v}`,
         required : true
@@ -26,7 +26,7 @@ const offerSchema = new Schema({
         min : 0
     },
     place : {
-        type : [{type:ObjectId,ref :'Place'}],
+        type : String,
         required : true ,
     },
     companyName : {
@@ -34,6 +34,14 @@ const offerSchema = new Schema({
         required : true ,
     },
     special : {
+        type : Boolean ,
+        default : false
+    },
+    includesTickets : {
+        type : Boolean ,
+        default : false
+    },
+    includeAccommodation : {
         type : Boolean ,
         default : false
     },
@@ -45,5 +53,9 @@ const offerSchema = new Schema({
     }
 },{timestamps:true});
 
+offerSchema.plugin(mongoosastic,{
+    hydrate: true,
+    hydrateOptions: {select: 'category price place'}
+  });
 const Offer = model ('Offer' , offerSchema);
 exports.Offer=Offer;

@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const {Company}= require('../models/company');
 const {validIdObject} = require('../helpers/validateObjectId');
 
@@ -30,9 +29,10 @@ const getOneCompany = async(req,res)=>{
 
 const addCompany = async(req,res)=>{
     try {
-    const {name} = req.body ;
+    const {name , phone} = req.body ;
     const company = new Company({
         name ,
+        phone
     });
     await company.save();
     res.send("Company added ");

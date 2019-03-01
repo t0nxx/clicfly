@@ -7,6 +7,12 @@ const companySchema = new Schema({
         required : true ,
         minlength : 3 ,
         maxlength : 255
+    },
+    phone : {
+        type : String ,
+        required : true ,
+        minlength : 10 ,
+        maxlength : 20
     }
 },{timestamps:true});
 
