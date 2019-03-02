@@ -50,17 +50,17 @@ const addUser = async(req,res)=>{
 const updateUser = async (req,res)=>{
     try {
         /* validate id is mongo objectType */
-        validIdObject(req.params.id);
+        validIdObject(req.user._id);
         const updatedData = req.body ;
         if(Object.keys(updatedData).length < 1 )throw new Error ("no data to update");
-        const result = await User.findById(req.params.id);
+        const result = await User.findById(req.user._id);
         if(!result) throw new Error("no User was found");
 
         if(req.body.email){
             const chkexist = await User.findOne({'email' : req.body.email});
             if(chkexist) throw new Error('email already exist');
         }
-        await User.findByIdAndUpdate(req.params.id,updatedData,{upsert : true});
+        await User.findByIdAndUpdate(req.user._id,updatedData,{upsert : true});
         res.status(200).send("User update done");
     } catch (error) {
         res.status(400).send(error.message);
@@ -86,11 +86,11 @@ const deleteUser = async(req,res)=>{
 const changePassword = async (req,res)=>{
     try {
         /* validate id is mongo objectType */
-        validIdObject(req.params.id);
+        validIdObject(req.user._id);
         const updatedData = req.body ;
 
         if(!updatedData.password)throw new Error ("no password enterd to change");
-        const result = await User.findById(req.params.id);
+        const result = await User.findById(req.user._id);
         if(!result) throw new Error("no User was found");
 
         if(updatedData.password.length < 6){
@@ -98,8 +98,8 @@ const changePassword = async (req,res)=>{
         }
         updatedData.password = await bcrypt.hashSync(updatedData.password,10);
 
-        await User.findByIdAndUpdate({_id:req.params.id},updatedData);
-        res.status(200).send("User password changed");
+        await User.findByIdAndUpdate({_id:req.user._id},updatedData);
+        res.status(200).send("Done password changed");
     } catch (error) {
         res.status(400).send(error.message);
     }

@@ -14,7 +14,13 @@ const EmailLogin = async(req,res)=>{
       const isMatch = await user.comPassword(req.body.password);
       if(!isMatch ) throw new Error("invalid user / password");
 
-      res.status(200).json({'token':genToken(user._id)}); 
+      res.status(200).json({'token':genToken({
+          _id :user._id ,
+          useType : user.useType ,
+          name : user.name ,
+          email : user.email ,
+          gender : user.gender
+        })}); 
     } catch (error) {
         res.status(400).send(error.message);
     }
