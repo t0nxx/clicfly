@@ -94,8 +94,8 @@ const deleteOffer = async(req,res)=>{
 const search = async (req,res)=>{
     let {q} = req.query ;
     try {
-        //const result = await Offer.search({query_string: {query: q}},{hydrate: true,hydrateOptions: {select: 'category'}});
-        Offer.search({query_string: {query: q}},(err, results)=>{
+        // full and partial search
+        Offer.search({query_string: {query: `*${q}*`}},(err, results)=>{
                 res.status(200).send(results.hits.hits);
           });
         
