@@ -9,6 +9,7 @@ const {UserRouter} = require('./src/api/v2/routes/user');
 const {AuthRouter} = require('./src/api/v2/routes/auth');
 const {AboutUsRouter} = require('./src/api/v2/routes/aboutUs');
 const {MessagesRouter} = require('./src/api/v2/routes/message');
+const {NotificationRouter} = require('./src/api/v2/routes/notification');
 require('dotenv').config();
 app.use(express.json());
 app.use(cors());
@@ -19,6 +20,7 @@ app.use('/users' , UserRouter);
 app.use('/auth' , AuthRouter);
 app.use('/about' , AboutUsRouter);
 app.use('/message' , MessagesRouter);
+app.use('/notifications' , NotificationRouter);
 
 app.get('/' , (req,res) => {
     res.status(200).send("welcome home route");

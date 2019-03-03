@@ -7,20 +7,20 @@ admin.initializeApp({
   databaseURL: "https://noti-app-d778e.firebaseio.com"
 });
 
-const registrationToken = 'dQ6adPAF91A:APA91bHlF_0MMfQ_OvY41LAPPe4V1HuSYoRNWaDI2V2ABCzjRQluhCPCYK7O0n6vXWjzVvY8ZIKPmrDJTGZb3XHAYYhIQpqIVekdiAhsnG3Bic9AXn9d7bCoozQ-r3_nqtCp8GYW1IfN';
-const registrationTokens = ['eoer7SZOIdk:APA91bGewpzrpNrx4or-OmtdkzvqBowVVxfxpdRoh6TFqKM4V_Q_xwsdt6ZZdLiVQmxdVeG6pjtgLKEKyPMwJQQ66Sh6TKFUkNCQzVHL9GL0XPilsrr6fx3_ArB1KTn3csdSHYSZBjzb','e7wGzEpst4Y:APA91bH5JUHB5jPY-kBlb3TfNpMQlf0DTY_CUhSlCqfZlTZNzvlrT-Y0PVJPm7Tq6uw8uATqrHHfQlHMrjk8u6A2c3n9xUO7rOILGMroptZtbGH6tAVHyb74_aIkyMtmQjpr7BnOxqyd','cC-qvPaoO-0:APA91bFYYEDC_UtPb1fTpAjuIR78EncvtnJEEvwlyBoQx86P3E0UjXUwdOb8Mdqvj_grF9Hg_Kq700O-5WAqvKu-3dody0OyJ-jElDd4NF5BzdXLjvLDbTOerXmVllngr2xD5E27yqLy'];
+const registrationToken = 'eoer7SZOIdk:APA91bGewpzrpNrx4or-OmtdkzvqBowVVxfxpdRoh6TFqKM4V_Q_xwsdt6ZZdLiVQmxdVeG6pjtgLKEKyPMwJQQ66Sh6TKFUkNCQzVHL9GL0XPilsrr6fx3_ArB1KTn3csdSHYSZBjzb';
 
 const message = {
   data: {
    title : 'New Offer',
-   msg : 'Hi ya sa7b :3'
+   msg : 'Hi ya sa7b :3',
+   icon : 'https://image.flaticon.com/icons/svg/1498/1498461.svg'
   },
-  //topic: 'test'
-  token: registrationToken
+  topic: 'test'
+  //token: registrationToken
 };
 
-function subscribeTopic (registrationTokens){
-  admin.messaging().subscribeToTopic(registrationTokens, 'test')
+function subscribeTopic (registrationToken){
+  admin.messaging().subscribeToTopic(registrationToken, 'test')
   .then(function(response) {
     console.log('Successfully subscribed to topic:', response);
   })
@@ -29,8 +29,18 @@ function subscribeTopic (registrationTokens){
   });
 }
 
+function unSubscribeTopic (registrationToken){
+  admin.messaging().unsubscribeFromTopic(registrationToken, 'test')
+  .then(function(response) {
+    console.log('Successfully Unsubscribed to topic:', response);
+  })
+  .catch(function(error) {
+    console.log('Error Unsubscribing to topic:', error);
+  });
+}
 
-function sendNotification (){
+
+function sendNotification (message){
   admin.messaging().send(message)
  .then((response) => {
  console.log('Successfully sent message:', response);
@@ -39,6 +49,7 @@ function sendNotification (){
  console.log('Error sending message:', error);
 });
 }
-subscribeTopic (registrationTokens);
+//subscribeTopic (registrationToken);
 
-sendNotification();
+//sendNotification(message);
+module.exports = {sendNotification , subscribeTopic , unSubscribeTopic} ;
