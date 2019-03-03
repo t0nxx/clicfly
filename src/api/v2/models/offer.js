@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema ;
 const model = mongoose.model;
-const galleryBaseUrl = 'http://localhost:5000/uploads/gallery/'
+const galleryBaseUrl = 'http://45.32.179.219:5000/uploads/gallery/'
 const ObjectId = Schema.Types.ObjectId;
 const mongoosastic = require('mongoosastic');
 const offerSchema = new Schema({
