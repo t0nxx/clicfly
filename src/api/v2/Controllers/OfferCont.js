@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const {Offer}= require('../models/offer');
 const {validIdObject}=require('../helpers/validateObjectId');
+const {makePath}=require('../helpers/photoPath');
 
 /* get all Offers handler */ 
 const getAllOffers = async (req,res)=>{
@@ -25,7 +26,7 @@ const getOneOffer = async(req,res)=>{
        /* validate id is mongo objectType */
         validIdObject(req.params.id);
 
-      const result = await Offer.findById(req.params.id);
+      const result = await Offer.findById(req.params.id).populate('companyName','name phone');
       if(!result) throw new Error("no Offer was found");
       result.homePhoto = result.homePhoto ;
       result.singlePhoto = result.singlePhoto
@@ -40,6 +41,10 @@ const getOneOffer = async(req,res)=>{
 const addOffer = async(req,res)=>{
     try {
     const {category , price , place , dateFrom , dateTo , companyName , special , includesTickets , includeAccommodation} = req.body ;
+    if(!req.files) throw new Error ('No photos selected');
+    if(!req.files.homePhoto || !req.files.singlePhoto) throw new Error ('Home / single photos are required');
+    let {singlePhoto,homePhoto} = req.files ;
+    /// add validate mimetype
     const offer = new Offer({
         category , 
         price , 
@@ -50,8 +55,8 @@ const addOffer = async(req,res)=>{
         special ,
         includesTickets ,
         includeAccommodation ,
-        homePhoto: "home.png",
-        singlePhoto: "single.png"
+        homePhoto: makePath(homePhoto),
+        singlePhoto: makePath(singlePhoto)
     });
     await offer.save();
     res.send("Offer added ");

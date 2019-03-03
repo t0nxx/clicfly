@@ -21,9 +21,12 @@ app.use('/auth' , AuthRouter);
 app.use('/about' , AboutUsRouter);
 app.use('/message' , MessagesRouter);
 app.use('/notifications' , NotificationRouter);
-
+app.use('/uploads/gallery',express.static(__dirname + '/uploads'));
 app.get('/' , (req,res) => {
     res.status(200).send("welcome home route");
+});
+app.get('/testoffer' , (req,res) => {
+    res.sendFile(__dirname+'/testup.html');
 });
 app.use('*' , (req,res) => {
     res.status(404).send("no route was found ");

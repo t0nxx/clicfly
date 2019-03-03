@@ -1,0 +1,17 @@
+<html>
+  <body>
+    <form ref='uploadForm' 
+      id='uploadForm' 
+      action='http://localhost:5000/offers/add' 
+      method='post' 
+      encType="multipart/form-data">
+      category :  <input type="text" name="category" value="Company"><br>
+      price :     <input type="number" name="price" value="150"> <br>
+      place :     <input type="text" name="place" value="place1"><br>
+      companyName: <input type="text" name="companyName" value="5c79652b29a1e71e1db8d71d"><br>
+      singlePhoto : <input type="file" name="singlePhoto" /><br>
+      homePhoto : <input type="file" name="homePhoto" /><br>
+        <input type='submit' value='Upload!' />
+    </form>     
+  </body>
+</html>

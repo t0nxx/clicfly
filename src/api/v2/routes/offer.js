@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const fileUpload= require('express-fileupload');
 const {
     getAllOffers,
     getOneOffer,
@@ -8,7 +9,6 @@ const {
     deleteOffer,
     search
 } = require('../Controllers/OfferCont');
-
 
 /*
 * get all Offers 
@@ -26,7 +26,7 @@ router.get('/:id',getOneOffer);
 /*
 * add Offer
 */
-router.post('/add',addOffer);
+router.post('/add',fileUpload(),addOffer);
 /*
 * update Offer
 */
