@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {getAllUsers,getOneUser,addUser,updateUser,deleteUser,changePassword} = require('../Controllers/UserCont');
+const {getAllUsers,getOneUser,addUser,updateUser,deleteUser,changePassword,forgetPassword} = require('../Controllers/UserCont');
 const {UserAuth}= require('../middlewares/userAuth');
 
 
@@ -17,6 +17,10 @@ router.get('/:id',getOneUser);
 * add User
 */
 router.post('/register',addUser);
+/*
+* add User
+*/
+router.post('/forgetpassword',forgetPassword);
 /*
 * update User
 */

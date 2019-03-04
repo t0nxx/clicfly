@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const {User,Base}= require('../models/user');
 const {validIdObject}=require('../helpers/validateObjectId');
+const {sendMail}=require('../helpers/sendMail');
 const bcrypt = require('bcryptjs');
 
 /* get all Users handler */ 
@@ -105,6 +106,22 @@ const changePassword = async (req,res)=>{
     }
 }
 
+/* forget password */ 
+const forgetPassword = async (req,res)=>{
+    try {
+        if (!req.body.email) throw new Error('please enter your email');
+        const chkexist = await User.findOne({'email' : req.body.email});
+        if(chkexist) {
+            let code = Math.floor(100000 + Math.random() * 900000) ; 
+                await User.findOneAndUpdate({'email' : chkexist.email},{resetCode : code});
+                sendMail(req.body.email,code);
+        };
+        res.status(200).send("an email was sent if you are already register");
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
+
 
 exports.getAllUsers=getAllUsers;
 exports.getOneUser=getOneUser;
@@ -112,3 +129,4 @@ exports.addUser=addUser;
 exports.updateUser=updateUser;
 exports.deleteUser=deleteUser;
 exports.changePassword=changePassword;
+exports.forgetPassword=forgetPassword;
