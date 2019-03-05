@@ -129,11 +129,10 @@ const forgetPassCode = async (req,res)=>{
         if (!req.body.resetCode) throw new Error('please enter reset code');
         const chkexist = await User.findOne({'email' : req.body.email});
         if(chkexist) {
-            if (req.body.resetCode == chkexist.resetCode)
-                console.log('reset is correct');
-            else
+            if (req.body.resetCode != chkexist.resetCode)
                 throw new Error ('invalid reset code');
-        };
+        }
+        else throw new Error ('invalid reset code');
         res.status(200).send({message: "correct code"});
     } catch (error) {
         res.status(400).send({message: error.message});
