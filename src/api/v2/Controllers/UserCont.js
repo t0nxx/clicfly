@@ -8,9 +8,9 @@ const bcrypt = require('bcryptjs');
 const getAllUsers = async (req,res)=>{
     try {
         const result = await Base.find({});
-        res.status(200).send(result);
+        res.status(200).send({message:result});
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send({message:error.message});
     }
 }
 
@@ -22,9 +22,9 @@ const getOneUser = async(req,res)=>{
 
       const result = await User.findById(req.params.id);
       if(!result) throw new Error("no User was found");
-      res.status(200).send(result); 
+      res.status(200).send({message:result}); 
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send({message:error.message});
     }
 }
 
@@ -41,9 +41,9 @@ const addUser = async(req,res)=>{
             gender   
     });
     await user.save();
-    res.status(200).send("User added ");
+    res.status(200).send({message:"User added "});
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send({message:error.message});
     }
 }
 
@@ -62,9 +62,9 @@ const updateUser = async (req,res)=>{
             if(chkexist) throw new Error('email already exist');
         }
         await User.findByIdAndUpdate(req.user._id,updatedData,{upsert : true});
-        res.status(200).send("User update done");
+        res.status(200).send({message:"User update done"});
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send({message:error.message});
     }
 }
 // it would be req.user._id after auth complete . up/dele
@@ -77,9 +77,9 @@ const deleteUser = async(req,res)=>{
         const result = await User.findById(req.params.id);
         if(!result) throw new Error("no User was found");
         await User.findByIdAndRemove(req.params.id);
-        res.status(200).send("User deleted");
+        res.status(200).send({message:"User deleted"});
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send({message:error.message});
     }
 }
 
@@ -100,9 +100,9 @@ const changePassword = async (req,res)=>{
         updatedData.password = await bcrypt.hashSync(updatedData.password,10);
 
         await User.findByIdAndUpdate({_id:req.user._id},updatedData);
-        res.status(200).send("Done password changed");
+        res.status(200).send({message:"Done password changed"});
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send({message:error.message});
     }
 }
 
@@ -116,9 +116,27 @@ const forgetPassword = async (req,res)=>{
                 await User.findOneAndUpdate({'email' : chkexist.email},{resetCode : code});
                 sendMail(req.body.email,code);
         };
-        res.status(200).send("an email was sent if you are already register");
+        res.status(200).send({message:"an email was sent if you are already register"});
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send({message:error.message});
+    }
+}
+
+/* forget password */ 
+const forgetPassCode = async (req,res)=>{
+    try {
+        if (!req.body.email) throw new Error('please enter your email');
+        if (!req.body.resetCode) throw new Error('please enter reset code');
+        const chkexist = await User.findOne({'email' : req.body.email});
+        if(chkexist) {
+            if (req.body.resetCode == chkexist.resetCode)
+                console.log('reset is correct');
+            else
+                throw new Error ('invalid reset code');
+        };
+        res.status(200).send({message: "correct code"});
+    } catch (error) {
+        res.status(400).send({message: error.message});
     }
 }
 
@@ -130,3 +148,4 @@ exports.updateUser=updateUser;
 exports.deleteUser=deleteUser;
 exports.changePassword=changePassword;
 exports.forgetPassword=forgetPassword;
+exports.forgetPassCode=forgetPassCode;

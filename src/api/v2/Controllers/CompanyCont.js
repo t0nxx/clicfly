@@ -5,9 +5,9 @@ const {validIdObject} = require('../helpers/validateObjectId');
 const getAllCompanies = async (req,res)=>{
     try {
         const result = await Company.find({});
-        res.status(200).send(result);
+        res.status(200).send({message:result});
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send({message:error.message});
     }
 }
 
@@ -19,9 +19,9 @@ const getOneCompany = async(req,res)=>{
 
       const result = await Company.findById(req.params.id);
       if(!result) throw new Error("no Company was found");
-      res.status(200).send(result); 
+      res.status(200).send({message:result}); 
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send({message:error.message});
     }
 }
 
@@ -35,9 +35,9 @@ const addCompany = async(req,res)=>{
         phone
     });
     await company.save();
-    res.send("Company added ");
+    res.send({message:"Company added "});
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send({message:error.message});
     }
 }
 
@@ -52,9 +52,9 @@ const updateCompany = async (req,res)=>{
         const result = await Company.findById(req.params.id);
         if(!result) throw new Error("no Company was found");
         await Company.findByIdAndUpdate({_id:req.params.id},updatedData);
-        res.status(200).send("Company update done");
+        res.status(200).send({message:"Company update done"});
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send({message:error.message});
     }
 }
 /* delete Company */
@@ -66,9 +66,9 @@ const deleteCompany = async(req,res)=>{
         const result = await Company.findById(req.params.id);
         if(!result) throw new Error("no Company was found");
         await Company.findByIdAndRemove(req.params.id);
-        res.status(200).send("Company deleted");
+        res.status(200).send({message:"Company deleted"});
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send({message:error.message});
     }
 }
 

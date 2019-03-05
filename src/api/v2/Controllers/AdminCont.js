@@ -7,9 +7,9 @@ const bcrypt = require('bcryptjs');
 const getAllAdmins = async (req,res)=>{
     try {
         const result = await Admin.find({});
-        res.status(200).send(result);
+        res.status(200).send({message:result});
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send({message:error.message});
     }
 }
 /* update Admin */ 
@@ -31,9 +31,9 @@ const updateAdmin = async (req,res)=>{
         }
         ////////
         await Admin.findByIdAndUpdate({_id:req.params.id},updatedData,{runValidators : true});
-        res.status(200).send("Admin update done");
+        res.status(200).send({message:"Admin update done"});
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send({message:error.message});
     }
 }
 exports.getAllAdmins=getAllAdmins;

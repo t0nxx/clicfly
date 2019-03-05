@@ -5,9 +5,9 @@ const {validIdObject} = require('../helpers/validateObjectId');
 const getAbout = async (req,res)=>{
     try {
         const result = await AboutUs.find({});
-        res.status(200).send(result);
+        res.status(200).send({message:result});
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send({message:error.message});
     }
 }
 
@@ -22,9 +22,9 @@ const updateAbout = async (req,res)=>{
         const result = await AboutUs.findById(req.params.id);
         if(!result) throw new Error("no data was found");
         await AboutUs.findByIdAndUpdate({_id:req.params.id},updatedData);
-        res.status(200).send("About Us update done");
+        res.status(200).send({message:"About Us update done"});
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send({message:error.message});
     }
 }
 module.exports = {getAbout , updateAbout};

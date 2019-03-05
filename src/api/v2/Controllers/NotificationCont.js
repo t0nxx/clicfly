@@ -5,9 +5,9 @@ const addToken = async(req,res)=>{
     try {
         if (!req.body.token) throw new Error('no token provided');
     await subscribeTopic(req.body.token);
-    res.send('token added done')
+    res.send({message:'token added done'})
     } catch (error) {
-        res.send(error.message);
+        res.send({message:error.message});
     }
 }
 
@@ -30,27 +30,27 @@ const addNotification = async(req,res)=>{
         topic: 'test'
       };
       sendNotification(message);
-    res.send('notification added done and pushed to users');
+    res.send({message:'notification added done and pushed to users'});
     } catch (error) {
-        res.send(error.message);
+        res.send({message:error.message});
     }
 }
 
 const getAllTokens = async(req,res)=>{
     try {
         const result = await NotificationToken.find({});
-        res.status(200).send(result);
+        res.status(200).send({message:result});
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send({message:error.message});
     }
 }
 
 const getAllNotifications = async(req,res)=>{
     try {
         const result = await Notification.find({});
-        res.status(200).send(result);
+        res.status(200).send({message:result});
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send({message:error.message});
     }
 }
 

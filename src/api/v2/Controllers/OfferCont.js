@@ -14,9 +14,9 @@ const getAllOffers = async (req,res)=>{
             offer.homePhoto = offer.homePhoto ;
             offer.singlePhoto = offer.singlePhoto;
         })
-        res.status(200).send(result);
+        res.status(200).send({message:result});
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send({message:error.message});
     }
 }
 
@@ -30,9 +30,9 @@ const getOneOffer = async(req,res)=>{
       if(!result) throw new Error("no Offer was found");
       result.homePhoto = result.homePhoto ;
       result.singlePhoto = result.singlePhoto
-      res.status(200).send(result); 
+      res.status(200).send({message:result}); 
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send({message:error.message});
     }
 }
 
@@ -59,9 +59,9 @@ const addOffer = async(req,res)=>{
         singlePhoto: makePath(singlePhoto)
     });
     await offer.save();
-    res.send("Offer added ");
+    res.send({message:"Offer added "});
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send({message:error.message});
     }
 }
 
@@ -76,9 +76,9 @@ const updateOffer = async (req,res)=>{
         const result = await Offer.findById(req.params.id);
         if(!result) throw new Error("no Offer was found");
         await Offer.findByIdAndUpdate({_id:req.params.id},updatedData);
-        res.status(200).send("Offer update done");
+        res.status(200).send({message:"Offer update done"});
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send({message:error.message});
     }
 }
 
@@ -90,9 +90,9 @@ const deleteOffer = async(req,res)=>{
         const result = await Offer.findById(req.params.id);
         if(!result) throw new Error("no Offer was found");
         await Offer.findByIdAndRemove(req.params.id);
-        res.status(200).send("Offer deleted");
+        res.status(200).send({message:"Offer deleted"});
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send({message:error.message});
     }
 }
 /* search */
@@ -101,11 +101,11 @@ const search = async (req,res)=>{
     try {
         // full and partial search
         Offer.search({query_string: {query: `*${q}*`}},(err, results)=>{
-                res.status(200).send(results.hits.hits);
+                res.status(200).send({message:results.hits.hits});
           });
         
     } catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send({message:error.message});
     }
 }
 exports.getAllOffers=getAllOffers;
