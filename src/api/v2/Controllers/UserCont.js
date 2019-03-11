@@ -40,6 +40,8 @@ const addUser = async(req,res)=>{
             password,
             gender   
     });
+    const chkexist = await User.findOne({'email' : email});
+    if(chkexist) throw new Error('email already exist');
     await user.save();
     res.status(200).send({message:"User added "});
     } catch (error) {
