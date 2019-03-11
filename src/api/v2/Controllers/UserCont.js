@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const {User,Base}= require('../models/user');
 const {validIdObject}=require('../helpers/validateObjectId');
 const {sendMail}=require('../helpers/sendMail');
+const {genToken}=require('../helpers/genToken');
 const bcrypt = require('bcryptjs');
 
 /* get all Users handler */ 
@@ -43,7 +44,13 @@ const addUser = async(req,res)=>{
     const chkexist = await User.findOne({'email' : email});
     if(chkexist) throw new Error('email already exist');
     await user.save();
-    res.status(200).send({message:"User added "});
+    res.status(200).send({'token':genToken({
+        _id :user._id ,
+        useType : user.useType ,
+        name : user.name ,
+        email : user.email ,
+        gender : user.gender
+      })});
     } catch (error) {
         res.status(400).send({message:error.message});
     }
