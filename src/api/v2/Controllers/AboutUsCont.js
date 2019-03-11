@@ -5,7 +5,7 @@ const {validIdObject} = require('../helpers/validateObjectId');
 const getAbout = async (req,res)=>{
     try {
         const result = await AboutUs.find({});
-        res.status(200).send({message:result});
+        res.status(200).send({message:result[0]});
     } catch (error) {
         res.status(400).send({message:error.message});
     }
