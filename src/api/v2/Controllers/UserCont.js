@@ -35,7 +35,6 @@ const addUser = async(req,res)=>{
     try {
     const {name , email , password , gender } = req.body ;
     const user = new User({
-        method : 'local',
             name ,
             email ,
             password,
@@ -120,6 +119,7 @@ const forgetPassword = async (req,res)=>{
     try {
         if (!req.body.email) throw new Error('please enter your email');
         const chkexist = await User.findOne({'email' : req.body.email});
+        if(!chkexist) throw new Error("no User was found");
         if(chkexist) {
             let code = Math.floor(100000 + Math.random() * 900000) ; 
                 await User.findOneAndUpdate({'email' : chkexist.email},{resetCode : code});
@@ -148,6 +148,33 @@ const forgetPassCode = async (req,res)=>{
     }
 }
 
+/* Change password */ 
+const changePasswordAfterResetode = async (req,res)=>{
+    try {
+        const {password,email,resetCode} = req.body ;
+        if(!password)throw new Error ("no password provided");
+        if(!email)throw new Error ("no email provided");
+        if(!password)throw new Error ("no resetCode provided");
+
+        const result = await User.findOne({'email' : email});
+        if(!result) throw new Error("no User was found");
+
+        if (resetCode != result.resetCode){
+            throw new Error ('invalid reset code');
+        }
+
+        if(password.length < 6){
+            throw new Error ("password length must be not less than 6");
+        }
+
+        result.password = await bcrypt.hashSync(password,10);
+
+        res.status(200).send({message:"Done password changed"});
+    } catch (error) {
+        res.status(400).send({message:error.message});
+    }
+}
+
 
 exports.getAllUsers=getAllUsers;
 exports.getOneUser=getOneUser;
@@ -157,3 +184,4 @@ exports.deleteUser=deleteUser;
 exports.changePassword=changePassword;
 exports.forgetPassword=forgetPassword;
 exports.forgetPassCode=forgetPassCode;
+exports.changePasswordAfterResetode=changePasswordAfterResetode;
