@@ -7,7 +7,9 @@ function sendMail(mail,resetCode){
         from: "Toni toni@test.1millionofcodes.com",
         to: `${mail}`,
         subject: 'Test Reset Password',
-        text: `test mail reset Password . your code is ${resetCode}`
+        text: `test mail reset Password .
+         your code is ${resetCode} 
+         code will expires after 5 minutes`
       };
     mailgun.messages().send(data, function (error, body) {
         if(error) console.log(error);
