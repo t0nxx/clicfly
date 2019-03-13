@@ -10,7 +10,17 @@ const baseSchema = new Schema ({},
     contains different schema type independantlly face/google/email .. */ 
 const Base = model('Base',baseSchema);
 /* end base Schema && model */
-
+const expiration_schema = new Schema({
+    createdAt : {
+        type: Date,
+        default: Date.now,
+        index : {expires : 60*5}
+    },
+    code : {
+        type : String ,
+        default : ""
+    }
+})
 /* start login with email schema */
 const emailUserSchema = new Schema({
     name : {
@@ -38,10 +48,9 @@ const emailUserSchema = new Schema({
         required : true
     },
     resetCode : {
-        type : String ,
-        default : "",
-        expires : 60*1
-    },
+        type : mongoose.Types.ObjectId,
+        ref :'Exp'
+    }
     
 });
 
@@ -59,6 +68,7 @@ emailUserSchema.methods.forgetPassword = async function (email){
 /* end login with email schema */
 
 /* start login with facebook schema */
+emailUserSchema.index({resetCode : 1} , {expires : 60})
 
 const facebookUserSchema = new Schema({
     _id : {
@@ -89,9 +99,10 @@ const User = Base.discriminator('EmailUser',emailUserSchema);
 const facebookUser = Base.discriminator('FacebookUser',facebookUserSchema);
 const googleUser = Base.discriminator('GoogleUser',googleUserSchema);
 /* end models inhertance */
-
+const Exp = model('Exp',expiration_schema);
 
 exports.User=User;
 exports.facebookUser = facebookUser ;
 exports.googleUser = googleUser ;
 exports.Base=Base;
+exports.Exp = Exp ;

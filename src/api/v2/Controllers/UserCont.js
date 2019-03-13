@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const {User,Base}= require('../models/user');
+const {User,Base,Exp}= require('../models/user');
 const {validIdObject}=require('../helpers/validateObjectId');
 const {sendMail}=require('../helpers/sendMail');
 const {genToken}=require('../helpers/genToken');
@@ -8,7 +8,7 @@ const bcrypt = require('bcryptjs');
 /* get all Users handler */ 
 const getAllUsers = async (req,res)=>{
     try {
-        const result = await Base.find({});
+        const result = await User.find({}).populate('resetCode');
         res.status(200).send({message:result});
     } catch (error) {
         res.status(400).send({message:error.message});
@@ -38,7 +38,7 @@ const addUser = async(req,res)=>{
             name ,
             email ,
             password,
-            gender   
+            gender ,  
     });
     const chkexist = await User.findOne({'email' : email});
     if(chkexist) throw new Error('email already exist');
@@ -121,9 +121,13 @@ const forgetPassword = async (req,res)=>{
         const chkexist = await User.findOne({'email' : req.body.email});
         if(!chkexist) throw new Error("sorry email not register");
         if(chkexist) {
-            let code = Math.floor(100000 + Math.random() * 900000) ; 
-                await User.findOneAndUpdate({'email' : chkexist.email},{resetCode : code});
-                sendMail(req.body.email,code);
+            let ex = new Exp({
+                code : Math.floor(100000 + Math.random() * 900000)
+            });
+            await ex.save();
+            //let code = Math.floor(100000 + Math.random() * 900000) ; 
+                await User.findOneAndUpdate({'email' : chkexist.email},{resetCode : ex._id});
+                sendMail(req.body.email,ex.code);
         };
         res.status(200).send({message:"an email was sent if you are already register"});
     } catch (error) {
@@ -136,9 +140,9 @@ const forgetPassCode = async (req,res)=>{
     try {
         if (!req.body.email) throw new Error('please enter your email');
         if (!req.body.resetCode) throw new Error('please enter reset code');
-        const chkexist = await User.findOne({'email' : req.body.email});
+        const chkexist = await User.findOne({'email' : req.body.email}).populate('resetCode');
         if(chkexist) {
-            if (req.body.resetCode != chkexist.resetCode)
+            if (!chkexist.resetCode ||req.body.resetCode != chkexist.resetCode.code)
                 throw new Error ('invalid reset code');
         }
         else throw new Error ('invalid reset code');
@@ -156,10 +160,10 @@ const changePasswordAfterResetode = async (req,res)=>{
         if(!email)throw new Error ("no email provided");
         if(!password)throw new Error ("no resetCode provided");
 
-        const result = await User.findOne({'email' : email});
-        if(!result) throw new Error("no User was found");
+        const result = await User.findOne({'email' : email}).populate('resetCode');
+        if(!result) throw new Error("sorry email not register");
 
-        if (resetCode != result.resetCode){
+        if (!result.resetCode ||resetCode != result.resetCode.code){
             throw new Error ('invalid reset code');
         }
 
@@ -167,7 +171,8 @@ const changePasswordAfterResetode = async (req,res)=>{
             throw new Error ("password length must be not less than 6");
         }
 
-        result.password = await bcrypt.hashSync(password,10);
+        let newPass = await bcrypt.hashSync(password,10);
+        await User.findByIdAndUpdate(result._id,{password:newPass})
 
         res.status(200).send({message:"Done password changed"});
     } catch (error) {
