@@ -8,7 +8,7 @@ const bcrypt = require('bcryptjs');
 /* get all Users handler */ 
 const getAllUsers = async (req,res)=>{
     try {
-        const result = await User.find({}).populate('resetCode');
+        const result = await Base.find({}).populate('resetCode');
         res.status(200).send({message:result});
     } catch (error) {
         res.status(400).send({message:error.message});
