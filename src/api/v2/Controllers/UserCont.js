@@ -119,7 +119,7 @@ const forgetPassword = async (req,res)=>{
     try {
         if (!req.body.email) throw new Error('please enter your email');
         const chkexist = await User.findOne({'email' : req.body.email});
-        if(!chkexist) throw new Error("no User was found");
+        if(!chkexist) throw new Error("sorry email not register");
         if(chkexist) {
             let code = Math.floor(100000 + Math.random() * 900000) ; 
                 await User.findOneAndUpdate({'email' : chkexist.email},{resetCode : code});

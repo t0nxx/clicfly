@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 
 /* start base schema */
 const baseSchema = new Schema ({},
-    {discriminatorKey: 'useType' ,collection : 'user' }); 
+    {discriminatorKey: 'useType' ,collection : 'user' ,timestamps:true}); 
     /* base collection , idea here to make one collection 'user'
     contains different schema type independantlly face/google/email .. */ 
 const Base = model('Base',baseSchema);
@@ -39,7 +39,8 @@ const emailUserSchema = new Schema({
     },
     resetCode : {
         type : String ,
-        default : ""
+        default : "",
+        expires : 60*1
     },
     
 });

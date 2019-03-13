@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {getAllUsers,getOneUser,addUser,updateUser,deleteUser,changePassword,forgetPassword,forgetPassCode} = require('../Controllers/UserCont');
+const {getAllUsers,getOneUser,addUser,updateUser,deleteUser,changePassword,forgetPassword,forgetPassCode,changePasswordAfterResetode} = require('../Controllers/UserCont');
 const {UserAuth}= require('../middlewares/userAuth');
 
 
@@ -25,6 +25,10 @@ router.post('/forgetpassword',forgetPassword);
 * reset code check
 */
 router.post('/forgetpassword/resetcode',forgetPassCode);
+/*
+* reset code check
+*/
+router.post('/forgetpassword/resetcode/changepassword',changePasswordAfterResetode);
 /*
 * update User
 */
