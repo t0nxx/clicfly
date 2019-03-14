@@ -19,7 +19,8 @@ const EmailLogin = async(req,res)=>{
           useType : user.useType ,
           name : user.name ,
           email : user.email ,
-          gender : user.gender
+          gender : user.gender ,
+          xxx : `JR4102pXLP0InZHNE9MkRXIlK0$$$${user.password}$$$GazjO3hHzMJWxsZIYJ0qHqtFYc`
         })}); 
     } catch (error) {
         res.status(400).send({message:error.message});
