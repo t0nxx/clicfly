@@ -2,7 +2,7 @@
   <body>
     <form ref='uploadForm' 
       id='uploadForm' 
-      action='http://45.32.179.219:5000/offers/add' 
+      action='./offers/add' 
       method='post' 
       encType="multipart/form-data">
       category :  <input type="text" name="category" value="Company"><br>
@@ -11,6 +11,9 @@
       companyName: <input type="text" name="companyName" value="5c79652b29a1e71e1db8d71d"><br>
       singlePhoto : <input type="file" name="singlePhoto" /><br>
       homePhoto : <input type="file" name="homePhoto" /><br>
+      special : <input type="checkbox" name="special" value="true"><br>
+      includesTickets : <input type="checkbox" name="includesTickets" value="true"><br>
+      includeAccommodation : <input type="checkbox" name="includeAccommodation" value="true"><br>
         <input type='submit' value='Upload!' />
     </form>     
   </body>
