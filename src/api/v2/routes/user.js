@@ -2,16 +2,16 @@ const express = require('express');
 const router = express.Router();
 const {getAllUsers,getOneUser,addUser,updateUser,deleteUser,changePassword,forgetPassword,forgetPassCode,changePasswordAfterResetode,addExp} = require('../Controllers/UserCont');
 const {UserAuth}= require('../middlewares/userAuth');
-
+const {AdminAuth}= require('../middlewares/adminAuth');
 /*
 * get all Users 
 */
-router.get('/',getAllUsers);
+router.get('/',AdminAuth,getAllUsers);   // require admin permission
 
 /*
 * get User
 */
-router.get('/:id',getOneUser);
+router.get('/:id',AdminAuth,getOneUser); // require admin permission
 /*
 * add User
 */
@@ -31,15 +31,15 @@ router.post('/forgetpassword/resetcode/changepassword',changePasswordAfterReseto
 /*
 * update User
 */
-router.put('/update',UserAuth,updateUser);
+router.put('/update',UserAuth,updateUser); // require user permission
 /*
 * delete User
 */
-router.delete('/:id',deleteUser);
+router.delete('/:id',AdminAuth,deleteUser);   // require admin permission
 /*
 * change password
 */  
-router.put('/changepassword',UserAuth,changePassword);
+router.put('/changepassword',UserAuth,changePassword);   // require user permission
 ///forget password
 
 exports.UserRouter=router;

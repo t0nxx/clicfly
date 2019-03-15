@@ -16,11 +16,12 @@ const getAllAdmins = async (req,res)=>{
 const updateAdmin = async (req,res)=>{
     try {
         /* validate id is mongo objectType */
-        validIdObject(req.params.id);
+        if(!req.user) throw new Error('access denied no token');
+        validIdObject(req.user._id);
 
         const updatedData = req.body ;
         if(Object.keys(updatedData).length < 1 )throw new Error ("no data to update");
-        const result = await Admin.findById(req.params.id);
+        const result = await Admin.findById(req.user._id);
         if(!result) throw new Error("no Admin was found");
         /* check if new pass cause mongoose pre update is fkin sh*t */
         if (updatedData.password) {
@@ -30,7 +31,7 @@ const updateAdmin = async (req,res)=>{
            updatedData.password = await bcrypt.hashSync(updatedData.password,10);
         }
         ////////
-        await Admin.findByIdAndUpdate({_id:req.params.id},updatedData,{runValidators : true});
+        await Admin.findByIdAndUpdate({_id:req.user._id},updatedData,{runValidators : true});
         res.status(200).send({message:"Admin update done"});
     } catch (error) {
         res.status(400).send({message:error.message});

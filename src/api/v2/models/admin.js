@@ -25,9 +25,10 @@ const adminSchema = new Schema({
 adminSchema.pre('save',async function(){    
     if(this.password && this.isModified('password')){
         this.password = await bcrypt.hashSync(this.password,10);
-    }
-    
+    }  
 })
-
+adminSchema.methods.comPassword = async function (pass){
+    return bcrypt.compare(pass,this.password)     
+}
 const Admin = model('Admin',adminSchema);
 exports.Admin=Admin;

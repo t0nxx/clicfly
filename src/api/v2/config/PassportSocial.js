@@ -16,7 +16,7 @@ const FacebookAuth = (req,res,next)=>{
                 res.json({token : genToken({_id :data.id})});
             }
         } catch (error) {
-            res.status(400).send(error.message);
+            res.status(400).send({message : error.message});
         }
     })(req,res,next)       
 };
@@ -31,7 +31,7 @@ const GoogleAuth = (req,res,next)=>{
                 res.json({token : genToken({_id : data.id})});
             }
         } catch (error) {
-            res.status(400).send(error.message);
+            res.status(400).send({message : error.message});
         }
     })(req,res,next)       
 };
