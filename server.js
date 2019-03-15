@@ -16,7 +16,8 @@ const accessLogStream = fs.createWriteStream(__dirname + '/logs.log', {flags: 'a
 require('dotenv').config();
 app.use(express.json());
 app.use(cors());
-app.use(morgan('combined',{skip: function (req, res) { return res.statusCode < 400 },stream : accessLogStream}));
+app.use(morgan('combined',{stream : accessLogStream}));
+// skip: function (req, res) { return res.statusCode < 400 },
 app.use('/admins' , AdminRouter);
 app.use('/companies' , CompanyRouter);
 app.use('/offers' , OfferRouter);
