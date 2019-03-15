@@ -7,6 +7,7 @@ const {
     updateCompany,
     deleteCompany,
 } = require('../Controllers/CompanyCont');
+const {AdminAuth}= require('../middlewares/adminAuth');
 
 
 
@@ -22,14 +23,14 @@ router.get('/:id',getOneCompany);
 /*
 * add Company
 */
-router.post('/add',addCompany);
+router.post('/add',AdminAuth,addCompany);   // require admin permission
 /*
 * update Company
 */
-router.put('/:id',updateCompany);
+router.put('/:id',AdminAuth,updateCompany);   // require admin permission
 /*
 * delete Company
 */
-router.delete('/:id',deleteCompany);
+router.delete('/:id',AdminAuth,deleteCompany);   // require admin permission
 
 exports.CompanyRouter=router;

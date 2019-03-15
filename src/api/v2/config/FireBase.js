@@ -19,14 +19,14 @@ const message = {
   //token: registrationToken
 };
 
-function subscribeTopic (registrationToken){
-  admin.messaging().subscribeToTopic(registrationToken, 'test')
-  .then(function(response) {
-    console.log('Successfully subscribed to topic:', response);
-  })
-  .catch(function(error) {
-    console.log('Error subscribing to topic:', error);
-  });
+async function subscribeTopic (registrationToken){
+  try {
+   let response = await admin.messaging().subscribeToTopic(registrationToken, 'test');
+   if(response.failureCount > 0) throw new error 
+  } catch (error) {
+    throw new Error ('invalid notification token') ;
+  }
+  
 }
 
 function unSubscribeTopic (registrationToken){
