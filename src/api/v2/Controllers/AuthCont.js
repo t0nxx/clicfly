@@ -20,14 +20,18 @@ const EmailLogin = async(req,res)=>{
       let crypted_string = `JR4102pXLPMkRXIlK0$$$${user.password}$$$GazjO3hHJ0qHqtFYc`;
       let crypted_code = crypto.AES.encrypt(CircularJSON.stringify(crypted_string),process.env.CRYPTO_SECRET);
 
-      res.status(200).json({'token':genToken({
-          _id :user._id ,
-          useType : user.useType ,
-          name : user.name ,
-          email : user.email ,
-          gender : user.gender ,
-          xxx : crypted_code.toString()
-        })}); 
+      res.status(200).json({
+        'token':genToken({
+            _id :user._id ,
+            email : user.email ,
+            xxx : crypted_code.toString()
+        }),
+        'data' : {
+            useType : user.useType ,
+            name : user.name ,
+            email : user.email ,
+            gender : user.gender ,
+    }}); 
     } catch (error) {
         res.status(400).send({message:error.message});
     }
