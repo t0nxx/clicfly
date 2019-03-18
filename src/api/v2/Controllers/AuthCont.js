@@ -27,6 +27,7 @@ const EmailLogin = async(req,res)=>{
             xxx : crypted_code.toString()
         }),
         'data' : {
+            _id :user._id,
             useType : user.useType ,
             name : user.name ,
             email : user.email ,
@@ -56,7 +57,12 @@ const AdminlLogin = async(req,res)=>{
           _id :admin._id ,
           email : admin.email ,
           xxx : crypted_code.toString()
-        })}); 
+        }),
+    'data' : {
+        _id :admin._id ,
+        name : admin.name,
+        email : admin.email ,
+    }}); 
     } catch (error) {
         res.status(400).send({message:error.message});
     }
