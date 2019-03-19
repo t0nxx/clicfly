@@ -23,9 +23,11 @@ const MessageSchema = new Schema({
     },
     subject : {
         type : String ,
-        minlength : 3 ,
-        maxlength : 255 ,
-        required : true
+        required : true ,
+        enum :{
+            values : ['suggestTrip','requestPrice'],
+            message: ' must be requestPrice or suggestTrip'
+        } 
     },
     message : {
         type : String ,
