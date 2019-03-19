@@ -54,7 +54,7 @@ const offerSchema = new Schema({
 },{timestamps:true});
 
 offerSchema.plugin(mongoosastic,{
-    hosts:['http://41.47.134.69:9200'],
+    hosts:['41.47.134.69:9200'],
     hydrate: true,
     hydrateOptions: {select: 'category price place'}
   });
