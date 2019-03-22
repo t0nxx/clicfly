@@ -24,11 +24,11 @@ const FacebookAuth = (req,res,next)=>{
 
 
 const GoogleAuth = (req,res,next)=>{
-    passport.authenticate('google-token',{session:false},(data)=>{
+    passport.authenticate('google-token',{session:false},(err,data)=>{
         try {
-            if(!data) throw new Error ('not signed account / invalid access token')
+            if(err || !data) console.log('no data')
             else {
-                console.log(data);
+            //    console.log(data);
                 res.json({
                     token : genToken({_id : data.id}),
                     'data' : data});
