@@ -75,7 +75,18 @@ const facebookUserSchema = new Schema({
         type : String ,
         required : true ,
     } ,
-    email :String
+    email : {
+        type : String ,
+        default : 'no email'
+    },
+    name : {
+        type : String ,
+        required : true ,
+    },
+    gender : {
+        type : String ,
+        required : true
+    }
 })
 
 /* end login with facebook schema */
@@ -87,7 +98,18 @@ const googleUserSchema = new Schema({
         type : String ,
         required : true 
     } ,
-    email :String
+    email : {
+        type : String ,
+        default : 'no email'
+    },
+    name : {
+        type : String ,
+        required : true ,
+    },
+    gender : {
+        type : String ,
+        required : true
+    }
 })
 
 /* end login with google schema */

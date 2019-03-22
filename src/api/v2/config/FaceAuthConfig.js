@@ -3,14 +3,17 @@ const {facebookUser} = require('../models/user');
 
 const faceAuthStrat = new FacebookTokenStrategy({
     clientID: process.env.FACEBOOK_APP_ID,
-    clientSecret: process.env.FACEBOOK_APP_SECRET
+    clientSecret: process.env.FACEBOOK_APP_SECRET ,
+    profileFields : ['id', 'email', 'gender','displayName']
 },async function(accessToken, refreshToken, profile,next){
     try {
     let isExist = await facebookUser.findOne({_id : profile.id});
     if(!isExist){
             let isExist = new facebookUser({
                 _id : profile.id ,
-                email : profile.emails[0].value
+                email : profile.emails[0].value ,
+                name : profile.displayName,
+                gender : profile.gender
              });
              await isExist.save();
     }
