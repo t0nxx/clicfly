@@ -10,10 +10,11 @@ passport.use(googAuthStrat);
 const FacebookAuth = (req,res,next)=>{
     passport.authenticate('facebook-token',{session:false},(err,data)=>{
         try {
-            if(err || !data) throw new Error ('not signed account / invalid access token')
+            if(err || !data) console.log(err);
             else {
-                console.log(data);
-                res.json({token : genToken({_id :data.id})});
+                res.json({
+                    token : genToken({_id :data.id}),
+                    'data' : data});
             }
         } catch (error) {
             res.status(400).send({message : error.message});
