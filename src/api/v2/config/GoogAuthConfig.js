@@ -6,11 +6,13 @@ const googAuthStrat = new GoogleTokenStrategy({
     clientSecret: process.env.GOOGLE_APP_SECRET
 },async function(accessToken, refreshToken, profile,next){
     try {
+        console.log(profile);
     let isExist = await googleUser.findOne({_id : profile.id});
     if(!isExist){
             let isExist = new googleUser({
                 _id : profile.id ,
-                email : profile.emails[0].value
+                email : profile.emails[0].value ,
+                name : profile.displayName
              });
              await isExist.save();
     }
