@@ -9,30 +9,38 @@ const offerSchema = new Schema({
         type : String ,
         enum : ['Company','Hotel'] ,
         required : true ,
+        es_indexed:true ,
+        es_type:'string' /// not searchable
     },
     homePhoto : {
         type : String,
-        get : v => `${galleryBaseUrl}${v}`,
+       // get : v => `${galleryBaseUrl}${v}`,
         required : true
     },
     singlePhoto : {
         type : String,
-        get : v => `${galleryBaseUrl}${v}`,
+      //  get : v => `${galleryBaseUrl}${v}`,
         required : true
     },
     price : {
         type : Number ,
         required : true ,
-        min : 0
+        min : 0 ,
+        es_indexed:true ,
+        es_type:'integer' ///not search
     },
     place : {
         type : String,
         required : true ,
+        es_indexed:true ,
+        es_type:'string'  
     },
     companyName : {
         type : ObjectId,ref :'Company',
-        required : true ,
-    },
+        required : true ,   //search
+        es_type:'nested', 
+        es_include_in_parent:true
+    }, 
     special : {
         type : Boolean ,
         default : false
@@ -45,18 +53,39 @@ const offerSchema = new Schema({
         type : Boolean ,
         default : false
     },
-    dateFrom : {
+    startDate : {
         type : Date ,
+        required : true
     },
-    dateTo : {
+    endtDate : {
         type : Date ,
+        required : true
+
     }
 },{timestamps:true});
 
 offerSchema.plugin(mongoosastic,{
-    hosts:['localhost:9200'],
+    //hosts:['localhost:9200'],
     hydrate: true,
-    hydrateOptions: {select: 'category price place'}
+    populate : [
+        {path: 'companyName', model: 'Company' ,select: 'name phone'}
+    ]
+    
+   // hydrateOptions: {select: 'category price place'}
   });
 const Offer = model ('Offer' , offerSchema);
+
+// let stream = Offer.synchronize()
+// , count = 0;
+
+// stream.on('data', function(err, doc){
+// count++;
+// });
+// stream.on('close', function(){
+// console.log('indexed ' + count + ' documents!');
+// });
+// stream.on('error', function(err){
+// console.log(err);
+// });
+//populate('companyName','name phone')
 exports.Offer=Offer;
