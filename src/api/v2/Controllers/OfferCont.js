@@ -54,7 +54,7 @@ const getOneOffer = async(req,res)=>{
 
 const addOffer = async(req,res)=>{
     try {
-    const {category , price , place , startDate , endtDate , companyName , special , includesTickets , includeAccommodation} = req.body ;
+    const {category , price , place , startDate , endDate , companyName , special , includesTickets , includeAccommodation} = req.body ;
     if(!req.files) throw new Error ('No photos selected');
     if(!req.files.homePhoto || !req.files.singlePhoto) throw new Error ('Home / single photos are required');
     if(!req.body.startDate || !req.body.endtDate) throw new Error ('startDate and endtDate are required');
@@ -65,7 +65,7 @@ const addOffer = async(req,res)=>{
         price , 
         place , 
         startDate , 
-        endtDate , 
+        endDate , 
         companyName ,
         special ,
         includesTickets ,
