@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const app  = express();
 const cors = require('cors');
 const morgan = require('morgan');
+const helmet = require('helmet');
 const {AdminRouter} = require('./src/api/v2/routes/admin');
 const {CompanyRouter} = require('./src/api/v2/routes/company');
 const {OfferRouter} = require('./src/api/v2/routes/offer');
@@ -17,6 +18,7 @@ require('dotenv').config();
 app.use(express.json());
 app.use(cors());
 app.use(morgan('combined',{stream : accessLogStream}));
+app.use(helmet());
 // skip: function (req, res) { return res.statusCode < 400 },
 app.use('/admins' , AdminRouter);
 app.use('/companies' , CompanyRouter);
