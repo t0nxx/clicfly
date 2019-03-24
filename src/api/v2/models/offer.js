@@ -39,7 +39,8 @@ const offerSchema = new Schema({
         type : ObjectId,ref :'Company',
         required : true ,   //search
         es_type:'nested', 
-        es_include_in_parent:true
+        es_include_in_parent:true ,
+        autopopulate: true
     }, 
     special : {
         type : Boolean ,
@@ -61,18 +62,22 @@ const offerSchema = new Schema({
         type : Date ,
         required : true
 
+    } ,
+    company : {
+        type :String
     }
 },{timestamps:true});
 
-offerSchema.plugin(mongoosastic,{
-    //hosts:['localhost:9200'],
-    hydrate: true,
-    populate : [
-        {path: 'companyName', model: 'Company' ,select: 'name phone'}
-    ]
+// offerSchema.plugin(mongoosastic,{
+//     //hosts:['localhost:9200'],
+//     hydrate: true,
+//     populate : [
+//         {path: 'companyName', model: 'Company' ,select: 'name phone'}
+//     ]
     
-   // hydrateOptions: {select: 'category price place'}
-  });
+//    // hydrateOptions: {select: 'category price place'}
+//   });
+offerSchema.plugin(require('mongoose-autopopulate'));
 const Offer = model ('Offer' , offerSchema);
 
 // let stream = Offer.synchronize()
