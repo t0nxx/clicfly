@@ -39,7 +39,7 @@ app.get('/logs' , (req,res) => {
     res.sendFile(__dirname+'/logs.log');
 });
 app.use('*' , (req,res) => {
-    res.status(404).send("404 Error Page Not Found");
+    res.status(404).sendFile(__dirname+'/404.html');
 });
 
 exports.app = app ;
