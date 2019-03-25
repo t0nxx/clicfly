@@ -5,7 +5,7 @@ require('dotenv').config();
 const UserAuth = async(req,res,next)=>{
     if (!process.env.EnableAuth) return next(); // disable auth in dev
     const token = req.header("Authorization");
-    if (!token) {return res.status(401).send({message :"access denied no token"});} 
+    if (!token) {return res.status(403).sendFile(__dirname+'/403.html');} 
     else if (token === process.env.MASTER_SECRET){ next();}  /// master key for all
     else try {
             const decode = await jwt.verify(token,process.env.JWT_SECRET);
