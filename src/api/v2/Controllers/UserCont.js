@@ -4,6 +4,9 @@ const {validIdObject}=require('../helpers/validateObjectId');
 const {sendMail}=require('../helpers/sendMail');
 const {genToken}=require('../helpers/genToken');
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto-js');
+const CircularJSON = require('circular-json');
+require('dotenv').config();
 
 /* get all Users handler */ 
 const getAllUsers = async (req,res)=>{
@@ -43,13 +46,22 @@ const addUser = async(req,res)=>{
     const chkexist = await User.findOne({'email' : email});
     if(chkexist) throw new Error('email already exist');
     await user.save();
-    res.status(200).send({'token':genToken({
-        _id :user._id ,
-        useType : user.useType ,
-        name : user.name ,
-        email : user.email ,
-        gender : user.gender
-      })});
+
+    let crypted_string = `JR4102pXLPMkRXIlK0$$$${user.password}$$$GazjO3hHJ0qHqtFYc`;
+    let crypted_code = crypto.AES.encrypt(CircularJSON.stringify(crypted_string),process.env.CRYPTO_SECRET);
+    res.status(200).json({
+        'token':genToken({
+            _id :user._id ,
+            email : user.email ,
+            xxx : crypted_code.toString()
+        }),
+        'data' : {
+            _id :user._id,
+            useType : user.useType ,
+            name : user.name ,
+            email : user.email ,
+            gender : user.gender ,
+    }}); 
     } catch (error) {
         res.status(400).send({message:error.message});
     }
