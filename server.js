@@ -17,6 +17,7 @@ const accessLogStream = fs.createWriteStream(__dirname + '/logs.log', {flags: 'a
 require('dotenv').config();
 app.use(express.json());
 app.use(cors());
+app.set("trust proxy", true);
 app.use(morgan('combined',{stream : accessLogStream}));
 app.use(helmet());
 // skip: function (req, res) { return res.statusCode < 400 },
