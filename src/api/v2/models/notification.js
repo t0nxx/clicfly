@@ -26,10 +26,6 @@ const notificationTokenSchema = new Schema({
         required : true
     }
 },{timestamps :true})
-<<<<<<< HEAD
-=======
-///
->>>>>>> 2423340a38c1ae8d23ecfc71bb281c1621c66192
 const NotificationToken = model('NotificationToken',notificationTokenSchema);
 const Notification = model('Notification',notificationSchema);
 module.exports={Notification,NotificationToken};
