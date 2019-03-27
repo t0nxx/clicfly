@@ -25,7 +25,7 @@ const notificationTokenSchema = new Schema({
         type : String ,
         required : true
     }
-})
+},{timestamps :true})
 const NotificationToken = model('NotificationToken',notificationTokenSchema);
 const Notification = model('Notification',notificationSchema);
 module.exports={Notification,NotificationToken};
