@@ -1,10 +1,11 @@
 const admin = require('firebase-admin');
 
-const serviceAccount = require('./service.json');
+const serviceAccount = require('./service2.json');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://noti-app-d778e.firebaseio.com"
+  // databaseURL: "https://noti-app-d778e.firebaseio.com"
+  databaseURL: "https://traveloffers-1553366481148.firebaseio.com"
 });
 
 const registrationToken = 'eoer7SZOIdk:APA91bGewpzrpNrx4or-OmtdkzvqBowVVxfxpdRoh6TFqKM4V_Q_xwsdt6ZZdLiVQmxdVeG6pjtgLKEKyPMwJQQ66Sh6TKFUkNCQzVHL9GL0XPilsrr6fx3_ArB1KTn3csdSHYSZBjzb';
