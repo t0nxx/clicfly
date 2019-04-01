@@ -5,10 +5,13 @@ const addToken = async(req,res)=>{
     try {
         if (!req.body.token) throw new Error('no token provided');
     await subscribeTopic(req.body.token);
-    let tok = new NotificationToken({
-        token : req.body.token
-    }) ;
-    await tok.save();
+    let checkExist = await NotificationToken.findOne({token : req.body.token});
+    if (!checkExist){
+        let tok = new NotificationToken({
+            token : req.body.token
+        }) ;
+        await tok.save();
+    }
     res.send({message:'token added done'})
     } catch (error) {
         res.send({message:error.message});
