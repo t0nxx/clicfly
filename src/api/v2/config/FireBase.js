@@ -22,7 +22,7 @@ const message = {
 
 async function subscribeTopic (registrationToken){
   try {
-   let response = await admin.messaging().subscribeToTopic(registrationToken, 'test');
+   let response = await admin.messaging().subscribeToTopic(registrationToken, 'marketing');
    if(response.failureCount > 0) throw new error 
   } catch (error) {
     throw new Error ('invalid notification token') ;
