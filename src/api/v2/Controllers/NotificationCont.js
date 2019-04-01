@@ -31,7 +31,7 @@ const addNotification = async(req,res)=>{
          msg : noti.msg ,
          icon : noti.icon
         },
-        topic: 'test'
+        topic: 'marketing'
       };
       sendNotification(message);
     res.send({message:'notification added done and pushed to users'});
