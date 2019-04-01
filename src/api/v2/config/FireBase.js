@@ -11,6 +11,7 @@ admin.initializeApp({
 const registrationToken = 'eoer7SZOIdk:APA91bGewpzrpNrx4or-OmtdkzvqBowVVxfxpdRoh6TFqKM4V_Q_xwsdt6ZZdLiVQmxdVeG6pjtgLKEKyPMwJQQ66Sh6TKFUkNCQzVHL9GL0XPilsrr6fx3_ArB1KTn3csdSHYSZBjzb';
 
 const message = {
+  // notification not data to web
   data: {
    title : 'New Offer',
    msg : 'Hi ya sa7b :3',

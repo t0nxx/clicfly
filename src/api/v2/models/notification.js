@@ -14,10 +14,6 @@ const notificationSchema = new Schema({
         minlength : 3 ,
         maxlength : 50 ,
         required : true
-    },
-    icon : {
-        type : String ,
-        default : 'https://image.flaticon.com/icons/svg/1498/1498461.svg'
     }
 },{timestamps:true})
 const notificationTokenSchema = new Schema({

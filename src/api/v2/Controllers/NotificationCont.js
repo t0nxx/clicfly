@@ -17,19 +17,17 @@ const addToken = async(req,res)=>{
 
 const addNotification = async(req,res)=>{
     try {
-        const {title,msg,icon} = req.body;
+        const {title,msg} = req.body;
         if(!title || ! msg) throw new Error ('title and msg are requird');
     const noti = new Notification({
         title ,
         msg,
-        icon
     });
     await noti.save();
     const message = {
-        data: {
+        notification: {
          title : noti.title,
-         msg : noti.msg ,
-         icon : noti.icon
+         body : noti.msg ,
         },
         topic: 'marketing'
       };
