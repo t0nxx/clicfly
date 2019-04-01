@@ -16,7 +16,7 @@ const message = {
    msg : 'Hi ya sa7b :3',
    icon : 'https://image.flaticon.com/icons/svg/1498/1498461.svg'
   },
-  topic: 'test'
+  topic: 'marketing'
   //token: registrationToken
 };
 
@@ -31,7 +31,7 @@ async function subscribeTopic (registrationToken){
 }
 
 function unSubscribeTopic (registrationToken){
-  admin.messaging().unsubscribeFromTopic(registrationToken, 'test')
+  admin.messaging().unsubscribeFromTopic(registrationToken, 'marketing')
   .then(function(response) {
     console.log('Successfully Unsubscribed to topic:', response);
   })
