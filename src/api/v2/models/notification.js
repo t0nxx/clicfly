@@ -6,7 +6,7 @@ const notificationSchema = new Schema({
     title : {
         type : String ,
         minlength : 3 ,
-        maxlength : 20 ,
+        maxlength : 50 ,
         required : true
     },
     msg : {
