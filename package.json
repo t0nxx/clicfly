@@ -34,6 +34,7 @@
     "mongoose": "^5.4.7",
     "mongoose-autopopulate": "^0.9.1",
     "morgan": "^1.9.1",
+    "node-deeplink": "^0.5.0",
     "passport": "^0.4.0",
     "passport-facebook-token": "^3.3.0",
     "passport-google-token": "^0.1.2"

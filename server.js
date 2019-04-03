@@ -4,6 +4,7 @@ const app  = express();
 const cors = require('cors');
 const morgan = require('morgan');
 const helmet = require('helmet');
+const deeplink = require('node-deeplink');
 const {AdminRouter} = require('./src/api/v2/routes/admin');
 const {CompanyRouter} = require('./src/api/v2/routes/company');
 const {OfferRouter} = require('./src/api/v2/routes/offer');
@@ -33,6 +34,12 @@ app.use('/uploads/gallery',express.static(__dirname + '/uploads'));
 app.get('/' , (req,res) => {
     res.status(200).redirect('https://traveloffersnhotels.com');
 });
+// deeplink 
+app.get('/app',deeplink({
+    fallback: 'https://traveloffersnhotels.com',
+    //  com.TravelOffersApp
+    android_package_name: 'com.anghami',
+  }))
 app.get('/testoffer' , (req,res) => {
     res.sendFile(__dirname+'/testup.html');
 });
