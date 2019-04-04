@@ -111,8 +111,12 @@ const changePassword = async (req,res)=>{
         const updatedData = req.body ;
 
         if(!updatedData.password)throw new Error ("no password enterd to change");
+        if(!updatedData.currentPassword)throw new Error ("current password can't be empty");
         const result = await User.findById(req.user._id);
         if(!result) throw new Error("no User was found");
+
+        const isMatch = await result.comPassword(updatedData.currentPassword);
+        if(!isMatch ) throw new Error("current password is wrong");
 
         if(updatedData.password.length < 6){
             throw new Error ("password length not less than 6");
