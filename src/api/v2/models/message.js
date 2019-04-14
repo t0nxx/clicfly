@@ -13,11 +13,13 @@ const MessageSchema = new Schema({
         type : String ,
         minlength : 6 ,
         maxlength : 255 ,
+        default : "no email"
     },
     phone :{
         type : String ,
         minlength : 6 ,
         maxlength : 30 ,
+        default : "no number"
     },
     subject : {
         type : String ,
