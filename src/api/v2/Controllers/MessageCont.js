@@ -14,6 +14,7 @@ const getMessages = async (req,res)=>{
 const addMessage = async(req,res)=>{
     try {
     const {name , email , phone , subject , message } = req.body ;
+    if(!email && ! phone)  throw new Error('يجب ادخال رقم الهاتف او البريد الالكتروني');
     const mess = new Message({
             name ,
             email ,

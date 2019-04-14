@@ -13,13 +13,11 @@ const MessageSchema = new Schema({
         type : String ,
         minlength : 6 ,
         maxlength : 255 ,
-        required : true ,
     },
     phone :{
         type : String ,
         minlength : 6 ,
-        maxlength : 20 ,
-        required   : true
+        maxlength : 30 ,
     },
     subject : {
         type : String ,
