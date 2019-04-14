@@ -14,7 +14,7 @@ const {AdminAuth}= require('../middlewares/adminAuth');
 /*
 * get all Companies
 */
-router.get('/',getAllCompanies);
+router.get('/',AdminAuth,getAllCompanies);
 
 /*
 * get Company
