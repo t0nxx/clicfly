@@ -56,7 +56,7 @@ const getOneOffer = async(req,res)=>{
 
 const addOffer = async(req,res)=>{
     try {
-    const {category , price , place , startDate , endDate , companyName , special , includesTickets , includeAccommodation} = req.body ;
+    const {category , price , place , startDate , endDate , companyName , special , includesTickets , includeAccommodation , vip} = req.body ;
     if(!req.files) throw new Error ('No photos selected');
     if(!req.files.homePhoto || !req.files.singlePhoto) throw new Error ('Home / single photos are required');
     if(!req.body.startDate || !req.body.endDate) throw new Error ('startDate and endtDate are required');
@@ -72,6 +72,7 @@ const addOffer = async(req,res)=>{
         special ,
         includesTickets ,
         includeAccommodation ,
+        vip ,
         homePhoto: makePath(homePhoto),
         singlePhoto: makePath(singlePhoto)
     });
@@ -79,7 +80,9 @@ const addOffer = async(req,res)=>{
     let comName = await Company.findById(offer.companyName) ;
     if(!comName) throw new Error("no Company was found");
     offer.company = comName.name ;
-
+    let count = await Offer.count({vip : true});
+    console.log(count);
+    if(count >= 4 ) throw new Error ('vip offers must not exceed 4 , please remove one of them');
     await offer.save();
     res.send({message:"Offer added "});
     } catch (error) {
@@ -162,9 +165,19 @@ const search = async (req,res)=>{
         res.status(400).send({message:error.message});
     }
 }
+//get vip offers 
+const getVipOffers = async(req,res)=>{
+    try {
+        const result = await Offer.find({vip : true});
+        res.status(200).send({message:result});
+    } catch (error) {
+        res.status(400).send({message:error.message});
+    }
+}
 exports.getAllOffers=getAllOffers;
 exports.getOneOffer=getOneOffer;
 exports.addOffer=addOffer;
 exports.updateOffer=updateOffer;
 exports.deleteOffer=deleteOffer;
 exports.search=search;
+exports.getVipOffers = getVipOffers ;

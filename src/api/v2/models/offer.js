@@ -65,6 +65,10 @@ const offerSchema = new Schema({
     } ,
     company : {
         type :String
+    } ,
+    vip : {
+        type : Boolean ,
+        default : false
     }
 },{timestamps:true});
 

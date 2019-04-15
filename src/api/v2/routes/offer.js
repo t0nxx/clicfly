@@ -7,7 +7,8 @@ const {
     addOffer,
     updateOffer,
     deleteOffer,
-    search
+    search ,
+    getVipOffers
 } = require('../Controllers/OfferCont');
 const {AdminAuth}= require('../middlewares/adminAuth');
 
@@ -15,6 +16,10 @@ const {AdminAuth}= require('../middlewares/adminAuth');
 * get all Offers 
 */
 router.get('/',getAllOffers);
+/*
+* get all Offers 
+*/
+router.get('/vip',getVipOffers);
 /*
 * search
 */
