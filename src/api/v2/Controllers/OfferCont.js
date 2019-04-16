@@ -24,7 +24,7 @@ const getAllOffers = async (req,res)=>{
         }
         //dateFrom : {$gte :'2010-11-30T00:00:00.000Z' ,$lte :'2010-11-30T00:00:00.000Z'}
         const total = await Offer.find(query).count();
-        const result = await Offer.find(query).skip(page * limit).limit(limit).populate('companyName','name phone');
+        const result = await Offer.find(query).skip(page * limit).limit(limit).populate('companyName','name phone').sort({createdAt : -1});
         let remaining = total - ( (page+1) * limit);
         // to retrive base url from db 
         // result.forEach(offer => {
@@ -155,7 +155,7 @@ const search = async (req,res)=>{
             ]
         })
         .skip(page * limit).limit(limit)
-        .populate('companyName','name phone').exec(function(err,result){
+        .populate('companyName','name phone').sort({createdAt : -1}).exec(function(err,result){
             console.log(total);
             let remaining = total - ( (page+1) * limit);
             remaining = remaining < 0 ? 0 : remaining ;
