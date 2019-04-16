@@ -80,9 +80,11 @@ const addOffer = async(req,res)=>{
     let comName = await Company.findById(offer.companyName) ;
     if(!comName) throw new Error("no Company was found");
     offer.company = comName.name ;
-    let count = await Offer.count({vip : true});
-    console.log(count);
+    if(vip){
+        let count = await Offer.count({vip : true});
+        console.log(count);
     if(count >= 4 ) throw new Error ('vip offers must not exceed 4 , please remove one of them');
+    }
     await offer.save();
     res.send({message:"Offer added "});
     } catch (error) {
