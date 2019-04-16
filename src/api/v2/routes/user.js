@@ -3,6 +3,12 @@ const router = express.Router();
 const {getAllUsers,getOneUser,addUser,updateUser,deleteUser,changePassword,forgetPassword,forgetPassCode,changePasswordAfterResetode,addExp} = require('../Controllers/UserCont');
 const {UserAuth}= require('../middlewares/userAuth');
 const {AdminAuth}= require('../middlewares/adminAuth');
+const rateLimit = require("express-rate-limit");
+const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 2 ,
+    message:{message : "Too many requests created from this IP, please try again after an 15 min"}
+  });
 /*
 * get all Users 
 */
@@ -19,7 +25,7 @@ router.post('/register',addUser);
 /*
 * forget password
 */
-router.post('/forgetpassword',forgetPassword);
+router.post('/forgetpassword',apiLimiter,forgetPassword);
 /*
 * reset code check
 */
