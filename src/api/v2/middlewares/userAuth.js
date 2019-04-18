@@ -11,20 +11,25 @@ const UserAuth = async(req,res,next)=>{
     else try {
             const decode = await jwt.verify(token,process.env.JWT_SECRET);
             if(decode){
-                if(decode.useType != 'EmailUser') next() ;
-                let {xxx} = decode;
-                if(!xxx) throw new Error ('invalid token');
-                /// decrypt the pass with random string
-                let temp = crypto.AES.decrypt(xxx.toString(),process.env.CRYPTO_SECRET);
-                xxx = JSON.parse( temp.toString(crypto.enc.Utf8));
+                if(decode.useType != 'EmailUser') {
+                    req.user = decode ;
+                    next() ;
+                } else {
+                        let {xxx} = decode;
+                    if(!xxx) throw new Error ('invalid token');
+                    /// decrypt the pass with random string
+                    let temp = crypto.AES.decrypt(xxx.toString(),process.env.CRYPTO_SECRET);
+                    xxx = JSON.parse( temp.toString(crypto.enc.Utf8));
 
-                let splited = xxx.split('$$$');
-                let pass = splited[1];
-                let user = await User.findById(decode._id);
-                if(!user || pass != user.password){
-                    throw new Error ('expired token please login again');
+                    let splited = xxx.split('$$$');
+                    let pass = splited[1];
+                    let user = await User.findById(decode._id);
+                    if(!user || pass != user.password){
+                        throw new Error ('expired token please login again');
+                    }
+                    req.user = decode ;
                 }
-                req.user = decode ;
+                
             }
             else throw new Error('invalid token');
             next();
