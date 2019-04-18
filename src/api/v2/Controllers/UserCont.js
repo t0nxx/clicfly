@@ -82,7 +82,7 @@ const updateUser = async (req,res)=>{
             //     if(chkexist) throw new Error('email already exist');
             // }
             await facebookUser.findByIdAndUpdate(req.user._id,updatedData,{upsert : true});
-            return res.status(200).send({message:"User update done"});
+            res.status(200).send({message:"User update done"});
         } else if (req.user.useType == "GoogleUser"){
             /*if user is google user */
                 const updatedData = req.body ;
@@ -95,7 +95,7 @@ const updateUser = async (req,res)=>{
             //     if(chkexist) throw new Error('email already exist');
             // }
             await googleUser.findByIdAndUpdate(req.user._id,updatedData,{upsert : true});
-            return res.status(200).send({message:"User update done"});
+            res.status(200).send({message:"User update done"});
         } else{
                 /* validate id is mongo objectType */
                 validIdObject(req.user._id);
@@ -109,7 +109,7 @@ const updateUser = async (req,res)=>{
                 if(chkexist) throw new Error('email already exist');
             }
             await User.findByIdAndUpdate(req.user._id,updatedData,{upsert : true});
-            return res.status(200).send({message:"User update done"});
+             res.status(200).send({message:"User update done"});
         }
     } catch (error) {
         res.status(400).send({message:error.message});
