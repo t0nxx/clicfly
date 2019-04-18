@@ -11,6 +11,7 @@ const UserAuth = async(req,res,next)=>{
     else try {
             const decode = await jwt.verify(token,process.env.JWT_SECRET);
             if(decode){
+                if(decode.useType != 'EmailUser') next() ;
                 let {xxx} = decode;
                 if(!xxx) throw new Error ('invalid token');
                 /// decrypt the pass with random string

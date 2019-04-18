@@ -24,6 +24,7 @@ const EmailLogin = async(req,res)=>{
         'token':genToken({
             _id :user._id ,
             email : user.email ,
+            useType : user.useType ,
             xxx : crypted_code.toString()
         }),
         'data' : {

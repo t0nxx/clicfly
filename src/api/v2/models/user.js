@@ -85,7 +85,7 @@ const facebookUserSchema = new Schema({
     },
     gender : {
         type : String ,
-        required : true
+        default : "private gender"
     }
 })
 
@@ -105,6 +105,10 @@ const googleUserSchema = new Schema({
     name : {
         type : String ,
         required : true ,
+    } ,
+    gender : {
+        type : String ,
+        default : "private gender"
     }
 })
 

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const {User,Base,Exp}= require('../models/user');
+const {User,Base,Exp , facebookUser , googleUser}= require('../models/user');
 const {validIdObject}=require('../helpers/validateObjectId');
 const {sendMail}=require('../helpers/sendMail');
 const {genToken}=require('../helpers/genToken');
@@ -70,18 +70,46 @@ const addUser = async(req,res)=>{
 /* update User */ 
 const updateUser = async (req,res)=>{
     try {
-        /* validate id is mongo objectType */
-        validIdObject(req.user._id);
-        const updatedData = req.body ;
-        if(Object.keys(updatedData).length < 1 )throw new Error ("no data to update");
-        const result = await User.findById(req.user._id);
-        if(!result) throw new Error("no User was found");
+        /* if user is facebook user */
+        if(req.user.useType == "FacebookUser"){
+                const updatedData = req.body ;
+            if(Object.keys(updatedData).length < 1 )throw new Error ("no data to update");
+            const result = await facebookUser.findById(req.user._id);
+            if(!result) throw new Error("no User was found");
 
-        if(req.body.email){
-            const chkexist = await User.findOne({'email' : req.body.email});
-            if(chkexist) throw new Error('email already exist');
+            if(req.body.email){
+                const chkexist = await facebookUser.findOne({'email' : req.body.email});
+                if(chkexist) throw new Error('email already exist');
+            }
+            await facebookUser.findByIdAndUpdate(req.user._id,updatedData,{upsert : true});
+        } else if (req.user.useType == "GoogleUser"){
+            /*if user is google user */
+                const updatedData = req.body ;
+            if(Object.keys(updatedData).length < 1 )throw new Error ("no data to update");
+            const result = await googleUser.findById(req.user._id);
+            if(!result) throw new Error("no User was found");
+
+            if(req.body.email){
+                const chkexist = await googleUser.findOne({'email' : req.body.email});
+                if(chkexist) throw new Error('email already exist');
+            }
+            await googleUser.findByIdAndUpdate(req.user._id,updatedData,{upsert : true});
+        } else{
+                /* validate id is mongo objectType */
+                validIdObject(req.user._id);
+            const updatedData = req.body ;
+            if(Object.keys(updatedData).length < 1 )throw new Error ("no data to update");
+            const result = await User.findById(req.user._id);
+            if(!result) throw new Error("no User was found");
+
+            if(req.body.email){
+                const chkexist = await User.findOne({'email' : req.body.email});
+                if(chkexist) throw new Error('email already exist');
+            }
+            await User.findByIdAndUpdate(req.user._id,updatedData,{upsert : true});
         }
-        await User.findByIdAndUpdate(req.user._id,updatedData,{upsert : true});
+    
+        
         res.status(200).send({message:"User update done"});
     } catch (error) {
         res.status(400).send({message:error.message});
