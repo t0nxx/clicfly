@@ -38,7 +38,7 @@ app.get('/' , (req,res) => {
 app.get('/app',deeplink({
     fallback: 'https://traveloffersnhotels.com',
     //  com.TravelOffersApp
-    android_package_name: 'com.TravelOffersApp',
+    android_package_name: 'com.TravelOffers',
   }))
 app.get('/testoffer' , (req,res) => {
     res.sendFile(__dirname+'/testup.html');
