@@ -21,6 +21,7 @@ app.use(cors());
 app.set("trust proxy", true);
 app.use(morgan('combined',{stream : accessLogStream}));
 app.use(helmet());
+app.disable('x-powered-by');  
 // skip: function (req, res) { return res.statusCode < 400 },
 app.use('/admins' , AdminRouter);
 app.use('/companies' , CompanyRouter);
