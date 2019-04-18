@@ -77,10 +77,10 @@ const updateUser = async (req,res)=>{
             const result = await facebookUser.findById(req.user._id);
             if(!result) throw new Error("no User was found");
 
-            if(req.body.email){
-                const chkexist = await facebookUser.findOne({'email' : req.body.email});
-                if(chkexist) throw new Error('email already exist');
-            }
+            // if(req.body.email){
+            //     const chkexist = await facebookUser.findOne({'email' : req.body.email});
+            //     if(chkexist) throw new Error('email already exist');
+            // }
             await facebookUser.findByIdAndUpdate(req.user._id,updatedData,{upsert : true});
         } else if (req.user.useType == "GoogleUser"){
             /*if user is google user */
@@ -89,10 +89,10 @@ const updateUser = async (req,res)=>{
             const result = await googleUser.findById(req.user._id);
             if(!result) throw new Error("no User was found");
 
-            if(req.body.email){
-                const chkexist = await googleUser.findOne({'email' : req.body.email});
-                if(chkexist) throw new Error('email already exist');
-            }
+            // if(req.body.email){
+            //     const chkexist = await googleUser.findOne({'email' : req.body.email});
+            //     if(chkexist) throw new Error('email already exist');
+            // }
             await googleUser.findByIdAndUpdate(req.user._id,updatedData,{upsert : true});
         } else{
                 /* validate id is mongo objectType */
