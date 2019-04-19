@@ -7,7 +7,7 @@ const rateLimit = require("express-rate-limit");
 const apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 2 ,
-    message:{message : "Too many requests created from this IP, please try again after an 15 min"}
+    message:{message : "تم ارسال العديد من الطلبات من هذا الجهاز . برجاء المحاولة مرة اخري بعد 15 دقيقة"}
   });
 /*
 * get all Users 
