@@ -11,11 +11,11 @@ const EmailLogin = async(req,res)=>{
             throw new Error("must enter email / password");
 
       const user = await User.findOne({email : req.body.email});
-      if(!user) throw new Error("invalid email / password");
+      if(!user) throw new Error("البريد الالكتروني او كلمة السر خطأ");
 
       if(!req.body.password) throw new Error("no password provided");
       const isMatch = await user.comPassword(req.body.password);
-      if(!isMatch ) throw new Error("invalid user / password");
+      if(!isMatch ) throw new Error("البريد الالكتروني او كلمة السر خطأ");
         /// encrypt the pass with random string
       let crypted_string = `JR4102pXLPMkRXIlK0$$$${user.password}$$$GazjO3hHJ0qHqtFYc`;
       let crypted_code = crypto.AES.encrypt(CircularJSON.stringify(crypted_string),process.env.CRYPTO_SECRET);
