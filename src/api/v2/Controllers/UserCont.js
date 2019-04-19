@@ -202,7 +202,7 @@ const changePasswordAfterResetode = async (req,res)=>{
         const {password,email,resetCode} = req.body ;
         if(!password)throw new Error ("برجاء ادخال كل البيانات");
         if(!email)throw new Error ("برجاء ادخال كل البيانات");
-        if(!resetCode)throw new Error ("برجاء ادخال كل البيانات");
+        if(!password)throw new Error ("برجاء ادخال كل البيانات");
 
         const result = await User.findOne({'email' : email}).populate('resetCode');
         if(!result) throw new Error("sorry email not register");
