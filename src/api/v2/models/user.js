@@ -44,8 +44,7 @@ const emailUserSchema = new Schema({
     },
     gender : {
         type : String ,
-        enum : ['male' , 'female'],
-        required : true
+        default : "private gender"
     },
     resetCode : {
         type : mongoose.Types.ObjectId,

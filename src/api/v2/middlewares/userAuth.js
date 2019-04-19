@@ -16,7 +16,7 @@ const UserAuth = async(req,res,next)=>{
                     next() ;
                 } else {
                         let {xxx} = decode;
-                    if(!xxx) throw new Error ('invalid token');
+                    if(!xxx) throw new Error ('جلسة منتهية. برجاء اعادة تسجيل الدخول');
                     /// decrypt the pass with random string
                     let temp = crypto.AES.decrypt(xxx.toString(),process.env.CRYPTO_SECRET);
                     xxx = JSON.parse( temp.toString(crypto.enc.Utf8));
@@ -25,16 +25,16 @@ const UserAuth = async(req,res,next)=>{
                     let pass = splited[1];
                     let user = await User.findById(decode._id);
                     if(!user || pass != user.password){
-                        throw new Error ('expired token please login again');
+                        throw new Error ('جلسة منتهية. برجاء اعادة تسجيل الدخول');
                     }
                     req.user = decode ;
                 }
                 
             }
-            else throw new Error('invalid token');
+            else throw new Error('جلسة منتهية. برجاء اعادة تسجيل الدخول');
             next();
         } catch (error) {
-            res.status(400).send({message :'invalid / expired token please login again'});
+            res.status(400).send({message :'جلسة منتهية. برجاء اعادة تسجيل الدخول'});
         }  
 }
 exports.UserAuth=UserAuth;

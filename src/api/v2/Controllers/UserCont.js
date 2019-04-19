@@ -73,7 +73,7 @@ const updateUser = async (req,res)=>{
         /* if user is facebook user */
         if(req.user.useType == "FacebookUser"){
                 const updatedData = req.body ;
-            if(Object.keys(updatedData).length < 1 )throw new Error ("no data to update");
+            if(Object.keys(updatedData).length < 1 )throw new Error ("لم يتم ادخال اي بيانات للتعديل");
             const result = await facebookUser.findById(req.user._id);
             if(!result) throw new Error("no User was found");
 
@@ -82,11 +82,11 @@ const updateUser = async (req,res)=>{
             //     if(chkexist) throw new Error('email already exist');
             // }
             await facebookUser.findByIdAndUpdate(req.user._id,updatedData,{upsert : true});
-            res.status(200).send({message:"User update done"});
+            res.status(200).send({message:"تم تحديث البيانات بنجاح"});
         } else if (req.user.useType == "GoogleUser"){
             /*if user is google user */
                 const updatedData = req.body ;
-            if(Object.keys(updatedData).length < 1 )throw new Error ("no data to update");
+            if(Object.keys(updatedData).length < 1 )throw new Error ("لم يتم ادخال اي بيانات للتعديل");
             const result = await googleUser.findById(req.user._id);
             if(!result) throw new Error("no User was found");
 
@@ -95,12 +95,12 @@ const updateUser = async (req,res)=>{
             //     if(chkexist) throw new Error('email already exist');
             // }
             await googleUser.findByIdAndUpdate(req.user._id,updatedData,{upsert : true});
-            res.status(200).send({message:"User update done"});
+            res.status(200).send({message:"تم تحديث البيانات بنجاح"});
         } else{
                 /* validate id is mongo objectType */
                 validIdObject(req.user._id);
             const updatedData = req.body ;
-            if(Object.keys(updatedData).length < 1 )throw new Error ("no data to update");
+            if(Object.keys(updatedData).length < 1 )throw new Error ("لم يتم ادخال اي بيانات للتعديل");
             const result = await User.findById(req.user._id);
             if(!result) throw new Error("no User was found");
 
@@ -109,7 +109,7 @@ const updateUser = async (req,res)=>{
                 if(chkexist) throw new Error('email already exist');
             }
             await User.findByIdAndUpdate(req.user._id,updatedData,{upsert : true});
-             res.status(200).send({message:"User update done"});
+             res.status(200).send({message:"تم تحديث البيانات بنجاح"});
         }
     } catch (error) {
         res.status(400).send({message:error.message});
@@ -138,13 +138,13 @@ const changePassword = async (req,res)=>{
         validIdObject(req.user._id);
         const updatedData = req.body ;
 
-        if(!updatedData.password)throw new Error ("no password enterd to change");
-        if(!updatedData.currentPassword)throw new Error ("current password can't be empty");
+        if(!updatedData.password)throw new Error ("برجاء ادخال كل البيانات");
+        if(!updatedData.currentPassword)throw new Error ("كلمة السر  الحالية لايمكن ان تكون فارغة");
         const result = await User.findById(req.user._id);
         if(!result) throw new Error("no User was found");
 
         const isMatch = await result.comPassword(updatedData.currentPassword);
-        if(!isMatch ) throw new Error("current password is wrong");
+        if(!isMatch ) throw new Error("كلمة السر الحالية خطأ");
 
         if(updatedData.password.length < 6){
             throw new Error ("password length not less than 6");
@@ -152,7 +152,7 @@ const changePassword = async (req,res)=>{
         updatedData.password = await bcrypt.hashSync(updatedData.password,10);
 
         await User.findByIdAndUpdate({_id:req.user._id},updatedData);
-        res.status(200).send({message:"Done password changed"});
+        res.status(200).send({message:"تم تغيير كلمة السر بنجاح"});
     } catch (error) {
         res.status(400).send({message:error.message});
     }
@@ -163,7 +163,7 @@ const forgetPassword = async (req,res)=>{
     try {
         if (!req.body.email) throw new Error('please enter your email');
         const chkexist = await User.findOne({'email' : req.body.email});
-        if(!chkexist) throw new Error("sorry email not register");
+        if(!chkexist) throw new Error("عفوا هذا البريد الالكتروني غير مسجل");
         if(chkexist) {
             let ex = new Exp({
                 code : Math.floor(100000 + Math.random() * 900000)
@@ -173,7 +173,7 @@ const forgetPassword = async (req,res)=>{
                 await User.findOneAndUpdate({'email' : chkexist.email},{resetCode : ex._id});
                 sendMail(req.body.email,ex.code);
         };
-        res.status(200).send({message:"an email was sent if you are already register"});
+        res.status(200).send({message:"تم ارسال الكود الى البريد الالكتروني بنجاح"});
     } catch (error) {
         res.status(400).send({message:error.message});
     }
@@ -187,10 +187,10 @@ const forgetPassCode = async (req,res)=>{
         const chkexist = await User.findOne({'email' : req.body.email}).populate('resetCode');
         if(chkexist) {
             if (!chkexist.resetCode ||req.body.resetCode != chkexist.resetCode.code)
-                throw new Error ('invalid reset code');
+                throw new Error ('هذا الكود خاطئ');
         }
-        else throw new Error ('invalid reset code');
-        res.status(200).send({message: "correct code"});
+        else throw new Error ('هذا الكود خاطئ');
+        res.status(200).send({message: "كود صحيح"});
     } catch (error) {
         res.status(400).send({message: error.message});
     }
@@ -200,15 +200,15 @@ const forgetPassCode = async (req,res)=>{
 const changePasswordAfterResetode = async (req,res)=>{
     try {
         const {password,email,resetCode} = req.body ;
-        if(!password)throw new Error ("no password provided");
-        if(!email)throw new Error ("no email provided");
-        if(!password)throw new Error ("no resetCode provided");
+        if(!password)throw new Error ("برجاء ادخال كل البيانات");
+        if(!email)throw new Error ("برجاء ادخال كل البيانات");
+        if(!resetCode)throw new Error ("برجاء ادخال كل البيانات");
 
         const result = await User.findOne({'email' : email}).populate('resetCode');
         if(!result) throw new Error("sorry email not register");
 
         if (!result.resetCode ||resetCode != result.resetCode.code){
-            throw new Error ('invalid reset code');
+            throw new Error ('كود خاطئ');
         }
 
         if(password.length < 6){
@@ -218,7 +218,7 @@ const changePasswordAfterResetode = async (req,res)=>{
         let newPass = await bcrypt.hashSync(password,10);
         await User.findByIdAndUpdate(result._id,{password:newPass})
 
-        res.status(200).send({message:"Done password changed"});
+        res.status(200).send({message:"تم تغيير كلمة السر بنجاح"});
     } catch (error) {
         res.status(400).send({message:error.message});
     }
