@@ -44,7 +44,7 @@ const addUser = async(req,res)=>{
             gender ,  
     });
     const chkexist = await User.findOne({'email' : email});
-    if(chkexist) throw new Error('email already exist');
+    if(chkexist) throw new Error('هذا البريد موجود بالفعل');
     await user.save();
 
     let crypted_string = `JR4102pXLPMkRXIlK0$$$${user.password}$$$GazjO3hHJ0qHqtFYc`;
