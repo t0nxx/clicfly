@@ -21,14 +21,14 @@ const AdminAuth = async(req,res,next)=>{
                 let pass = splited[1];
                 let admin = await Admin.findById(decode._id);
                 if(!admin || pass != admin.password){
-                    throw new Error ('expired token please login again');
+                    throw new Error ('جلسة منتهية. برجاء اعادة تسجيل الدخول');
                 }
                 req.user = decode ;
             }
-            else throw new Error('invalid token');
+            else throw new Error('جلسة منتهية. برجاء اعادة تسجيل الدخول');
             next();
         } catch (error) {
-            res.status(400).send({message :'invalid / expired token please login again'});
+            res.status(400).send({message :'جلسة منتهية. برجاء اعادة تسجيل الدخول'});
         }  
 }
 exports.AdminAuth=AdminAuth;

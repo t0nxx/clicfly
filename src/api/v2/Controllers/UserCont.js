@@ -150,9 +150,19 @@ const changePassword = async (req,res)=>{
             throw new Error ("password length not less than 6");
         }
         updatedData.password = await bcrypt.hashSync(updatedData.password,10);
-
-        await User.findByIdAndUpdate({_id:req.user._id},updatedData);
-        res.status(200).send({message:"تم تغيير كلمة السر بنجاح"});
+        
+        let user = await User.findByIdAndUpdate({_id:req.user._id},updatedData , {new : true});
+        
+        let crypted_string = `JR4102pXLPMkRXIlK0$$$${user.password}$$$GazjO3hHJ0qHqtFYc`;
+        let crypted_code = crypto.AES.encrypt(CircularJSON.stringify(crypted_string),process.env.CRYPTO_SECRET);
+        res.status(200).send({
+        message:"تم تغيير كلمة السر بنجاح" , 
+        'newToken':genToken({
+            _id :user._id ,
+            email : user.email ,
+            xxx : crypted_code.toString()
+        })
+    });
     } catch (error) {
         res.status(400).send({message:error.message});
     }
@@ -218,7 +228,7 @@ const changePasswordAfterResetode = async (req,res)=>{
         let newPass = await bcrypt.hashSync(password,10);
         await User.findByIdAndUpdate(result._id,{password:newPass})
 
-        res.status(200).send({message:"تم تغيير كلمة السر بنجاح"});
+        res.status(200).send({message:" تم تغيير كلمة السر بنجاح .برجاء اعادة تسجيل الدخول"});
     } catch (error) {
         res.status(400).send({message:error.message});
     }
