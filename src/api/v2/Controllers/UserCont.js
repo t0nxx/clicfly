@@ -228,7 +228,7 @@ const changePasswordAfterResetode = async (req,res)=>{
         let newPass = await bcrypt.hashSync(password,10);
         await User.findByIdAndUpdate(result._id,{password:newPass})
 
-        res.status(200).send({message:" تم تغيير كلمة السر بنجاح .برجاء اعادة تسجيل الدخول"});
+        res.status(200).send({message:"تم تغيير كلمة السر بنجاح"});
     } catch (error) {
         res.status(400).send({message:error.message});
     }
