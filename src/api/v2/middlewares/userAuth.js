@@ -4,16 +4,14 @@ const crypto = require('crypto-js');
 const path = require('path');
 require('dotenv').config();
 const UserAuth = async(req,res,next)=>{
-    if (!process.env.EnableAuth) return next(); // disable auth in dev
     const token = req.header("Authorization");
     if (!token) {return res.status(403).sendFile(path.join(__dirname , '../../../../403.html'));} 
-    else if (token === process.env.MASTER_SECRET){ next();}  /// master key for all
     else try {
             const decode = await jwt.verify(token,process.env.JWT_SECRET);
             if(decode){
                 if(decode.useType != 'EmailUser') {
                     req.user = decode ;
-                    next() ;
+                    return next() ;
                 } else {
                         let {xxx} = decode;
                     if(!xxx) throw new Error ('جلسة منتهية. برجاء اعادة تسجيل الدخول');
@@ -31,8 +29,10 @@ const UserAuth = async(req,res,next)=>{
                 }
                 
             }
-            else throw new Error('جلسة منتهية. برجاء اعادة تسجيل الدخول');
-            next();
+            else {
+                throw new Error('جلسة منتهية. برجاء اعادة تسجيل الدخول');
+            }
+            return next();
         } catch (error) {
             res.status(400).send({message :'جلسة منتهية. برجاء اعادة تسجيل الدخول'});
         }  
