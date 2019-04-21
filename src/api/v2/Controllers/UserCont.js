@@ -154,7 +154,7 @@ const changePassword = async (req,res)=>{
         let user = await User.findByIdAndUpdate({_id:req.user._id},updatedData , {new : true});
         
         let crypted_string = `JR4102pXLPMkRXIlK0$$$${user.password}$$$GazjO3hHJ0qHqtFYc`;
-        let crypted_code = crypto.AES.encrypt(CircularJSON.stringify(crypted_string),process.env.CRYPTO_SECRET);
+        let crypted_code = await crypto.AES.encrypt(CircularJSON.stringify(crypted_string),process.env.CRYPTO_SECRET);
         res.status(200).send({
         message:"تم تغيير كلمة السر بنجاح" , 
         'newToken':genToken({
