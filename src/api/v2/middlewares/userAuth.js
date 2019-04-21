@@ -28,6 +28,7 @@ const UserAuth = async(req,res,next)=>{
                         throw new Error ('جلسة منتهية. برجاء اعادة تسجيل الدخول');
                     }
                     req.user = decode ;
+                    next();
                 }
                 
             }
