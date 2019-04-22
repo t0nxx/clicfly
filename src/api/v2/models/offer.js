@@ -24,14 +24,14 @@ const offerSchema = new Schema({
     },
     price : {
         type : Number ,
-        required : true ,
-        min : 0 ,
+        // required : true ,
+        // min : 0 ,
         es_indexed:true ,
         es_type:'integer' ///not search
     },
     place : {
         type : String,
-        required : true ,
+        // required : true ,
         es_indexed:true ,
         es_type:'string'  
     },
@@ -56,11 +56,13 @@ const offerSchema = new Schema({
     },
     startDate : {
         type : Date ,
-        required : true
+        default : Date.now
+        // required : true
     },
     endDate : {
         type : Date ,
-        required : true
+        default : Date.now
+        // required : true
 
     } ,
     company : {

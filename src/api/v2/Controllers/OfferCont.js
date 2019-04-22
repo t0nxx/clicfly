@@ -59,7 +59,7 @@ const addOffer = async(req,res)=>{
     const {category , price , place , startDate , endDate , companyName , special , includesTickets , includeAccommodation , vip} = req.body ;
     if(!req.files) throw new Error ('No photos selected');
     if(!req.files.homePhoto || !req.files.singlePhoto) throw new Error ('Home / single photos are required');
-    if(!req.body.startDate || !req.body.endDate) throw new Error ('startDate and endtDate are required');
+    //if(!req.body.startDate || !req.body.endDate) throw new Error ('startDate and endtDate are required');
     let {singlePhoto,homePhoto} = req.files ;
     /// add validate mimetype
     let offer = new Offer({
