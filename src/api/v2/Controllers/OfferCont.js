@@ -80,7 +80,7 @@ const addOffer = async(req,res)=>{
     let comName = await Company.findById(offer.companyName) ;
     if(!comName) throw new Error("no Company was found");
     offer.company = comName.name ;
-    if(vip){
+    if(vip && vip === true){
         let count = await Offer.count({vip : true});
         console.log(count);
     if(count >= 4 ) throw new Error ('vip offers must not exceed 4 , please remove one of them');
@@ -102,7 +102,7 @@ const updateOffer = async (req,res)=>{
         if(Object.keys(updatedData).length < 1 )throw new Error ("no data to update");
         const result = await Offer.findById(req.params.id);
         if(!result) throw new Error("no Offer was found");
-        if(updatedData.vip){
+        if(updatedData.vip && updatedData.vip == true){
             let count = await Offer.count({vip : true});
             console.log(count);
         if(count >= 4 ) throw new Error ('vip offers must not exceed 4 , please remove one of them');
