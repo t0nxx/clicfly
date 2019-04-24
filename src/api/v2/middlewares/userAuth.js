@@ -34,7 +34,7 @@ const UserAuth = async(req,res,next)=>{
             }
             return next();
         } catch (error) {
-            res.status(400).send({message :'جلسة منتهية. برجاء اعادة تسجيل الدخول'});
+            res.status(401).send({message :'جلسة منتهية. برجاء اعادة تسجيل الدخول'});
         }  
 }
 exports.UserAuth=UserAuth;

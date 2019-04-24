@@ -28,7 +28,7 @@ const AdminAuth = async(req,res,next)=>{
             else throw new Error('جلسة منتهية. برجاء اعادة تسجيل الدخول');
             next();
         } catch (error) {
-            res.status(400).send({message :'جلسة منتهية. برجاء اعادة تسجيل الدخول'});
+            res.status(401).send({message :'جلسة منتهية. برجاء اعادة تسجيل الدخول'});
         }  
 }
 exports.AdminAuth=AdminAuth;
