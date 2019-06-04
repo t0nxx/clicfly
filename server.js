@@ -41,10 +41,10 @@ app.get('/app',deeplink({
     //  com.TravelOffersApp
     android_package_name: 'com.TravelOffers',
   }))
-app.get('/testoffer' , (req,res) => {
-    res.sendFile(__dirname+'/testup.html');
-});
-app.get('/logs' , (req,res) => {
+// app.get('/testoffer' , (req,res) => {
+//     res.sendFile(__dirname+'/testup.html');
+// });
+app.get('/logstesttest' , (req,res) => {
     res.sendFile(__dirname+'/logs.log');
 });
 app.use('*' , (req,res) => {
